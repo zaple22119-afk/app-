@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Balanc — Osobní rozvoj, tělo a mysl</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0A3323">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark: #0A3323;
+    --teal: #105666;
+    --beige: #F7F4D5;
+    --moss: #839958;
+    --rose: #D3968C;
+
+    --dark-soft: #0f4530;
+    --beige-dim: #efeac0;
+    --shadow: 0 10px 30px rgba(10,51,35,0.10);
+    --shadow-sm: 0 4px 14px rgba(10,51,35,0.08);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;width:100%;height:100%;}
+  body{
+    font-family:'Nunito', sans-serif;
+    background: linear-gradient(180deg,#e9e4bd, #d9d6ad);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--dark);
+  }
+  h1,h2,h3,h4,.headline{
+    font-family:'Quicksand', sans-serif;
+    font-weight:700;
+    margin:0;
+  }
+  
+  /* ---------- PHONE WRAPPER vs WEB PWA ---------- */
+  .phone{
+    width:390px;
+    height:844px;
+    background: var(--beige);
+    border-radius:52px;
+    border:10px solid var(--dark);
+    box-shadow: 0 30px 60px rgba(10,51,35,0.35);
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .notch{
+    position:absolute;
+    top:10px;left:50%;transform:translateX(-50%);
+    width:120px;height:26px;background:var(--dark);
+    border-radius:0 0 18px 18px;
+    z-index:50;
+  }
+  .statusbar{
+    height:46px;
+    display:flex;align-items:flex-end;justify-content:space-between;
+    padding:0 26px 6px 26px;
+    font-size:13px;font-weight:700;color:var(--dark);
+    font-family:'Nunito';
+    flex-shrink:0;
+  }
+  .screen{
+    position:absolute;
+    top:46px; left:0; right:0; bottom:86px;
+    overflow-y:auto;
+    padding:14px 18px 24px 18px;
+    display:none;
+  }
+  .screen.active{display:block;}
+  .screen::-webkit-scrollbar{width:0px;}
+
+  /* ---------- BOTTOM NAV ---------- */
+  .bottomnav{
+    position:absolute;
+    left:14px; right:14px; bottom:16px;
+    height:72px;
+    background: var(--dark);
+    border-radius:28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    box-shadow: 0 10px 24px rgba(10,51,35,0.4);
+    z-index:40;
+  }
+  .navbtn{
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    background:none;border:none;cursor:pointer;
+    color:#7fa896; padding:6px 10px; border-radius:16px;
+    transition:.2s;
+  }
+  .navbtn svg{width:22px;height:22px;stroke:#7fa896;fill:none;stroke-width:1.8;transition:.2s;}
+  .navbtn span{font-size:10.5px;font-weight:700;font-family:'Nunito';}
+  .navbtn.active{color:var(--beige);background:rgba(131,153,88,0.18);}
+  .navbtn.active svg{stroke:var(--moss);}
+  .navbtn.active span{color:var(--beige);}
+
+  /* ---------- CARDS ---------- */
+  .card{
+    background:var(--beige);
+    border-radius:26px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow-sm);
+    border:1px solid rgba(10,51,35,0.06);
+  }
+  .card-dark{
+    background:var(--dark);
+    color:var(--beige);
+    border-radius:26px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .card-teal{
+    background:var(--teal);
+    color:var(--beige);
+    border-radius:26px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .card-title{
+    font-family:'Quicksand';font-weight:700;font-size:15px;
+    display:flex;align-items:center;gap:8px;margin-bottom:12px;
+  }
+  .muted{color:rgba(10,51,35,0.55);font-size:12.5px;font-weight:600;}
+  .card-dark .muted, .card-teal .muted{color:rgba(247,244,213,0.65);}
+
+  /* ---------- HEADER (Dnes) ---------- */
+  .home-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;margin-top:2px;}
+  .avatar{
+    width:52px;height:52px;border-radius:18px;
+    background:linear-gradient(135deg,var(--moss),var(--teal));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Quicksand';font-weight:700;color:var(--beige);font-size:20px;
+    box-shadow:var(--shadow-sm);
+    flex-shrink:0;
+  }
+  .home-header h2{font-size:19px;}
+  .home-header .date{font-size:12px;font-weight:700;color:var(--teal);margin-top:2px;}
+  .motivation{
+    font-size:12.5px;font-weight:600;color:var(--dark);
+    background:rgba(131,153,88,0.18);
+    border-radius:16px;padding:10px 14px;margin-bottom:16px;
+    display:flex;gap:8px;align-items:center;
+  }
+
+  /* mood tracker */
+  .mood-row{display:flex;justify-content:space-between;margin-bottom:16px;}
+  .mood-btn{
+    width:42px;height:42px;border-radius:14px;border:none;background:var(--beige-dim);
+    font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:.15s;
+  }
+  .mood-btn.sel{background:var(--moss);transform:scale(1.12);box-shadow:var(--shadow-sm);}
+
+  /* battery */
+  .battery-wrap{margin-bottom:16px;}
+  .battery-label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .battery-shell{
+    position:relative;height:26px;border-radius:14px;background:var(--beige-dim);
+    border:2px solid var(--dark); overflow:hidden;
+  }
+  .battery-shell:after{
+    content:"";position:absolute;right:-9px;top:8px;width:6px;height:10px;background:var(--dark);border-radius:0 3px 3px 0;
+  }
+  .battery-fill{height:100%;background:linear-gradient(90deg,var(--moss),#a3bb6d);border-radius:12px;transition:width .15s;}
+  .battery-range{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer;}
+  .energy-val{font-family:'Quicksand';font-weight:700;font-size:14px;color:var(--moss);}
+
+  /* cycle toggle */
+  .seg-row{display:flex;gap:6px;flex-wrap:wrap;}
+  .seg-btn{
+    flex:1;min-width:60px;text-align:center;padding:9px 4px;border-radius:14px;
+    background:var(--beige-dim);border:none;font-size:11px;font-weight:700;color:var(--dark);cursor:pointer;
+  }
+  .seg-btn.sel{background:var(--rose);color:#fff;}
+
+  .cycle-settings{display:flex;gap:8px;margin-bottom:12px;}
+  .cycle-settings .field{flex:1;margin-bottom:0;}
+  .cycle-settings .field-label{font-size:10.5px;}
+  .cycle-forecast{
+    display:flex;align-items:center;gap:10px;border-radius:16px;padding:10px 14px;margin-bottom:12px;
+    background:rgba(131,153,88,0.18);font-size:12px;font-weight:700;color:var(--dark);
+  }
+  .cycle-forecast.soon{background:var(--rose);color:#fff;}
+  .cycle-forecast .big{font-family:'Quicksand';font-size:13.5px;}
+
+  /* quick grid */
+  .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+  .quick-btn{
+    background:var(--dark);color:var(--beige);border:none;border-radius:22px;
+    padding:16px 10px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;
+    cursor:pointer;box-shadow:var(--shadow-sm);text-align:left;transition:.2s;
+  }
+  .quick-btn:active{transform:scale(0.96);}
+  .quick-btn svg{width:22px;height:22px;stroke:var(--moss);fill:none;stroke-width:1.8;}
+  .quick-btn span{font-family:'Quicksand';font-weight:700;font-size:12.5px;line-height:1.25;}
+  .quick-btn:nth-child(2){background:var(--teal);}
+  .quick-btn:nth-child(3){background:var(--rose);color:var(--dark);}
+  .quick-btn:nth-child(3) svg{stroke:var(--dark);}
+  .quick-btn:nth-child(4){background:var(--moss);color:var(--dark);}
+  .quick-btn:nth-child(4) svg{stroke:var(--dark);}
+
+  /* mini trackers */
+  .glass-row{display:flex;gap:6px;margin:10px 0 4px 0;}
+  .glass{width:26px;height:32px;cursor:pointer;flex-shrink:0;}
+  .glass svg{width:100%;height:100%;}
+  .stepper{display:flex;align-items:center;gap:14px;justify-content:center;margin-top:8px;}
+  .step-btn{
+    width:34px;height:34px;border-radius:12px;border:none;background:var(--beige-dim);
+    font-size:18px;font-weight:700;cursor:pointer;color:var(--dark);
+  }
+  .step-val{font-family:'Quicksand';font-weight:700;font-size:16px;min-width:60px;text-align:center;}
+
+  .gratitude-input{
+    width:100%;border:none;background:var(--beige-dim);border-radius:14px;
+    padding:10px 12px;font-family:'Nunito';font-size:12.5px;margin-bottom:8px;
+    color:var(--dark);font-weight:600;
+  }
+  .gratitude-input::placeholder{color:rgba(10,51,35,0.4);}
+
+  /* ---------- CALENDAR (MOOD + CYCLE INTEGRATED & BIG ICONS) ---------- */
+  .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .cal-arrow{background:none;border:none;font-size:18px;font-weight:700;cursor:pointer;color:var(--dark);padding:4px 10px;}
+  .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+  .weekdays span{text-align:center;font-size:11px;font-weight:700;color:var(--teal);}
+  .caldays{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+  .day-cell{
+    aspect-ratio:1;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    font-size:11px;font-weight:700;cursor:pointer;position:relative;border:1.5px solid rgba(0,0,0,0.04);
+    color:var(--dark);padding-top:3px;background:var(--beige-dim);transition:.15s;
+    overflow:hidden;
+  }
+  .day-cell:active{transform:scale(0.92);}
+  .day-cell.empty{background:transparent;border:none;cursor:default;}
+  .day-cell.today{font-weight:800;box-shadow: 0 0 0 2px var(--dark) inset;}
+  
+  /* Mood background colors in calendar */
+  .day-cell.mood-1{background: #eccbcc;} /* špatná nálada */
+  .day-cell.mood-2{background: #e6dfb8;} /* neutrální */
+  .day-cell.mood-3{background: #e2e8bc;} /* fajn */
+  .day-cell.mood-4{background: #cae4b1;} /* skvělá */
+  .day-cell.mood-5{background: #b2d888;} /* fantastická */
+
+  /* Cycle overlays on top of mood colors */
+  .day-cell.period-day{border: 2.5px solid #d35d47; font-weight:800;}
+  .day-cell.period-day::after{content:"🩸";font-size:9.5px;position:absolute;top:2px;right:2px;line-height:1;}
+  .day-cell.ovulation-day{border: 2px dashed var(--teal);}
+  .day-cell.ovulation-day::after{content:"✨";font-size:9.5px;position:absolute;top:2px;right:2px;line-height:1;}
+
+  /* BIGGER ICONS */
+  .day-cell .icons{display:flex;gap:3px;margin-top:auto;padding-bottom:4px;height:18px;align-items:center;}
+  .day-cell .icons svg{width:16px;height:16px;fill:var(--dark);opacity:0.85;flex-shrink:0;}
+  .day-cell.period-day .icons svg{fill:#9b3829;}
+
+  .cycle-strip{
+    height:8px;border-radius:6px;margin:14px 0 18px 0;
+    background: linear-gradient(90deg, var(--rose) 0 18%, var(--moss) 18% 46%, var(--teal) 46% 57%, var(--dark) 57% 100%);
+    opacity:.65;
+  }
+  .legend-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;font-size:10.5px;font-weight:700;}
+  .legend-item{display:flex;align-items:center;gap:5px;color:var(--dark);}
+  .legend-dot{width:12px;height:12px;border-radius:4px;flex-shrink:0;border:1px solid rgba(0,0,0,0.1);}
+  .legend-icon{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;}
+  .legend-icon svg{width:15px;height:15px;fill:var(--dark);}
+
+  .day-detail{
+    background:var(--dark);color:var(--beige);border-radius:24px;padding:18px;margin-top:10px;
+    animation:fadeIn .2s ease;
+  }
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .day-detail h4{font-size:15px;margin-bottom:10px;color:var(--moss);display:flex;justify-content:space-between;align-items:center;}
+  .day-detail .entry{background:rgba(247,244,213,0.08);border-radius:14px;padding:10px 12px;margin-bottom:8px;font-size:12px;line-height:1.4;}
+  .day-detail .entry b{color:var(--rose);}
+
+  /* ---------- PROGRESS TAB ---------- */
+  .transform-row{display:flex;gap:10px;position:relative;margin-bottom:10px;}
+  .upload-slot{
+    flex:1;aspect-ratio:3/4;border-radius:20px;position:relative;overflow:hidden;
+    background:var(--beige-dim);border:2px dashed rgba(10,51,35,0.25);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    background-size:cover;background-position:center;
+  }
+  .upload-slot.clickable{cursor:pointer;}
+  .upload-slot svg{width:24px;height:24px;stroke:var(--teal);fill:none;stroke-width:1.6;}
+  .upload-slot span{font-size:10.5px;font-weight:700;color:var(--teal);text-align:center;padding:0 8px;}
+  .upload-slot.filled{border:none;}
+  .upload-slot.filled span, .upload-slot.filled svg{display:none;}
+  .upload-slot .tag{
+    position:absolute;top:8px;left:8px;background:rgba(10,51,35,0.75);color:var(--beige);
+    font-size:9.5px;font-weight:700;padding:3px 8px;border-radius:8px;z-index:2;
+  }
+  .upload-slot .lock-overlay{
+    position:absolute;inset:0;background:rgba(10,51,35,0.65);backdrop-filter:blur(4px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    color:var(--beige);font-size:11px;font-weight:700;text-align:center;padding:12px;z-index:3;
+  }
+  .upload-slot .lock-overlay svg{stroke:var(--beige);width:28px;height:28px;}
+
+  .archive-btn{
+    background:var(--dark);color:var(--beige);border:none;border-radius:14px;padding:10px;
+    width:100%;font-family:'Quicksand';font-weight:700;font-size:12px;cursor:pointer;
+  }
+
+  /* ---------- GALLERY / FOLDERS ---------- */
+  .new-folder-row{display:flex;gap:8px;margin-bottom:14px;}
+  .new-folder-row input{
+    flex:1;border:none;background:var(--beige-dim);border-radius:14px;padding:10px 12px;
+    font-family:'Nunito';font-weight:600;font-size:12.5px;color:var(--dark);
+  }
+  .new-folder-row button{
+    background:var(--dark);color:var(--beige);border:none;border-radius:14px;padding:0 16px;
+    font-family:'Quicksand';font-weight:700;font-size:12px;cursor:pointer;
+  }
+  .folder{background:var(--beige-dim);border-radius:18px;padding:12px 14px;margin-bottom:10px;}
+  .folder-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+  .folder-head .name{font-family:'Quicksand';font-weight:700;font-size:13px;display:flex;align-items:center;gap:8px;}
+  .folder-head .count{font-size:11px;font-weight:700;color:var(--teal);}
+  .folder-photos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px;}
+  .folder-photos .ph{aspect-ratio:1;border-radius:10px;background-size:cover;background-position:center;background-color:rgba(10,51,35,0.08);}
+  .folder-add{
+    aspect-ratio:1;border-radius:10px;background:rgba(10,51,35,0.08);border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--teal);
+  }
+  .empty-hint{font-size:11.5px;font-weight:600;color:rgba(10,51,35,0.5);text-align:center;padding:10px 0;}
+
+  /* ---------- GRAPHS ---------- */
+  .chart-wrap{width:100%;height:150px;position:relative;}
+  .chart-legend{display:flex;gap:14px;margin-top:8px;flex-wrap:wrap;}
+  .donut-row{display:flex;align-items:center;gap:18px;}
+  .donut{
+    width:110px;height:110px;border-radius:50%;flex-shrink:0;
+    background: conic-gradient(var(--moss) 0% 45%, var(--teal) 45% 72%, var(--rose) 72% 100%);
+    position:relative;transition:background .3s ease;
+  }
+  .donut:after{content:"";position:absolute;inset:18px;background:var(--beige);border-radius:50%;}
+  .donut-legend{display:flex;flex-direction:column;gap:8px;flex:1;}
+  .donut-legend .li{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;}
+  .donut-legend .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+  /* ---------- HALL OF FAME (BADGES & SMART CHALLENGES) ---------- */
+  .badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px;}
+  .badge{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;}
+  .badge-circle{
+    width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:22px;box-shadow:var(--shadow-sm);transition:.2s;
+  }
+  .badge:active .badge-circle{transform:scale(0.92);}
+  .badge-circle.unlocked{background:linear-gradient(135deg,var(--moss),#a3bb6d);}
+  .badge-circle.locked{background:rgba(10,51,35,0.12);opacity:.55;position:relative;}
+  .badge-circle.locked::after{content:"🔒";font-size:10px;position:absolute;bottom:2px;right:2px;}
+  .badge span{font-size:9.5px;font-weight:700;text-align:center;line-height:1.2;color:var(--dark);max-width:60px;}
+  
+  .add-badge-btn{
+    width:100%;background:rgba(131,153,88,0.2);color:var(--dark);border:1px dashed var(--moss);
+    border-radius:16px;padding:10px;font-family:'Quicksand';font-weight:700;font-size:12.5px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+
+  /* ---------- PROFIL TAB ---------- */
+  .goal-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,51,35,0.08);}
+  .goal-row:last-child{border-bottom:none;}
+  .goal-label{font-size:12.5px;font-weight:700;color:var(--dark);}
+  .goal-label .sub{display:block;font-size:10.5px;font-weight:600;color:var(--teal);margin-top:1px;}
+  .goal-input{
+    width:78px;border:none;background:var(--beige-dim);border-radius:12px;padding:8px 10px;
+    font-family:'Quicksand';font-weight:700;font-size:13px;text-align:center;color:var(--dark);
+  }
+  .notif-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(247,244,213,0.12);}
+  .notif-row:last-child{border-bottom:none;}
+  .toggle{position:relative;width:42px;height:24px;flex-shrink:0;margin-left:10px;}
+  .toggle input{opacity:0;width:0;height:0;}
+  .slider-toggle{position:absolute;inset:0;background:rgba(247,244,213,0.25);border-radius:20px;cursor:pointer;transition:.2s;}
+  .slider-toggle:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:var(--beige);border-radius:50%;transition:.2s;}
+  input:checked + .slider-toggle{background:var(--moss);}
+  input:checked + .slider-toggle:before{transform:translateX(18px);}
+  .time-input{
+    background:rgba(247,244,213,0.12);border:none;border-radius:10px;padding:6px 8px;
+    color:var(--beige);font-family:'Nunito';font-weight:700;font-size:12px;
+  }
+  .save-btn{
+    width:100%;background:var(--moss);color:var(--dark);border:none;border-radius:18px;
+    padding:14px;font-family:'Quicksand';font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;
+  }
+  .profile-top{display:flex;align-items:center;gap:14px;margin-bottom:18px;cursor:pointer;background:rgba(10,51,35,0.05);padding:12px;border-radius:22px;}
+  .profile-top .avatar{width:64px;height:64px;font-size:24px;border-radius:20px;}
+  .edit-tag{font-size:11.5px;font-weight:700;color:var(--teal);margin-top:2px;display:flex;align-items:center;gap:4px;}
+
+  /* ---------- MODAL ---------- */
+  .modal-overlay{
+    position:absolute;inset:0;background:rgba(10,51,35,0.65);z-index:100;
+    display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(2px);
+  }
+  .modal-overlay.show{display:flex;}
+  .modal-sheet{
+    background:var(--beige);width:100%;border-radius:32px 32px 0 0;padding:24px 20px 30px 20px;
+    max-height:85%;overflow-y:auto;box-shadow:0 -10px 40px rgba(0,0,0,0.2);
+    animation:slideup .25s cubic-bezier(0.1, 0.9, 0.2, 1);
+  }
+  @keyframes slideup{from{transform:translateY(100%);}to{transform:translateY(0);}}
+  .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .modal-head h3{font-size:17px;}
+  .modal-close{background:var(--beige-dim);border:none;width:32px;height:32px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;color:var(--dark);}
+  .field-label{font-size:11.5px;font-weight:700;color:var(--teal);margin-bottom:5px;display:block;}
+  .field{margin-bottom:14px;}
+  select.field-input, input.field-input, textarea.field-input{
+    width:100%;border:none;background:var(--beige-dim);border-radius:14px;padding:12px 14px;
+    font-family:'Nunito';font-weight:600;font-size:13.5px;color:var(--dark);
+  }
+  textarea.field-input{resize:none;height:60px;}
+  .modal-save{
+    width:100%;background:var(--dark);color:var(--beige);border:none;border-radius:16px;
+    padding:14px;font-family:'Quicksand';font-weight:700;font-size:14px;cursor:pointer;margin-top:8px;
+  }
+  .stopwatch-row{display:flex;align-items:center;justify-content:space-between;background:var(--beige-dim);border-radius:14px;padding:12px;margin-bottom:14px;}
+  .stopwatch-time{font-family:'Quicksand';font-weight:700;font-size:22px;color:var(--teal);}
+  .stopwatch-btn{background:var(--moss);border:none;border-radius:12px;padding:8px 16px;font-weight:700;font-size:12px;color:var(--dark);cursor:pointer;}
+
+  .toast{
+    position:absolute;bottom:100px;left:50%;transform:translateX(-50%);
+    background:var(--dark);color:var(--beige);padding:12px 20px;border-radius:18px;
+    font-size:12.5px;font-weight:700;z-index:200;opacity:0;pointer-events:none;transition:.3s;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);text-align:center;max-width:85%;
+  }
+  .toast.show{opacity:1;}
+
+  .custom-input-wrap{display:none;margin-top:-6px;margin-bottom:14px;}
+  .custom-input-wrap.show{display:block;}
+
+  /* ---------- RESPONSIVE DESIGN FOR WEB & MOBILE ---------- */
+  @media (max-width: 480px), (max-height: 750px) {
+    body { padding: 0; background: var(--beige); align-items: stretch; }
+    .phone { width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; border: none; box-shadow: none; }
+    .notch { display: none; }
+    .statusbar { padding-top: 10px; }
+    .screen { top: 36px; bottom: 80px; padding: 12px 14px 20px 14px; }
+    .bottomnav { left: 8px; right: 8px; bottom: 8px; height: 66px; border-radius: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span id="clockTime">9:41</span>
+    <span>●●●●  🔋 <span id="notifStatusIcon" style="font-size:10px;opacity:0.6;">🔕</span></span>
+  </div>
+
+  <div class="screen active" id="screen-dnes">
+
+    <div class="home-header" onclick="openProfileEdit()">
+      <div class="avatar" id="mainAvatar">EM</div>
+      <div>
+        <h2 id="mainGreeting">Ahoj, Emo! 🌿</h2>
+        <div class="date" id="currentDateDisplay">Pondělí, 20. července</div>
+      </div>
+    </div>
+
+    <div class="motivation" id="motivationBox">✨ <span>Dnes se ti daří skvěle — drž tempo, tělo i mysl ti poděkují.</span></div>
+
+    <div class="card">
+      <div class="card-title">🌤️ Ranní checklist</div>
+
+      <div class="muted" style="margin-bottom:8px;">Jak se dnes cítíš? (zabarví dnešní den v kalendáři)</div>
+      <div class="mood-row" id="moodRow">
+        <button class="mood-btn" data-mood="1">😞</button>
+        <button class="mood-btn" data-mood="2">😐</button>
+        <button class="mood-btn sel" data-mood="3">🙂</button>
+        <button class="mood-btn" data-mood="4">😄</button>
+        <button class="mood-btn" data-mood="5">🤩</button>
+      </div>
+
+      <div class="battery-wrap">
+        <div class="battery-label-row">
+          <span class="muted">Úroveň energie</span>
+          <span class="energy-val" id="energyVal">65 %</span>
+        </div>
+        <div class="battery-shell">
+          <div class="battery-fill" id="batteryFill" style="width:65%"></div>
+          <input type="range" min="0" max="100" value="65" class="battery-range" id="energyRange">
+        </div>
+      </div>
+
+      <div class="muted" style="margin-bottom:8px;">Fáze cyklu & kalendář</div>
+      <div class="cycle-settings">
+        <div class="field">
+          <span class="field-label">Poslední menstruace</span>
+          <input type="date" class="field-input" id="lastPeriodInput">
+        </div>
+        <div class="field">
+          <span class="field-label">Délka cyklu (dny)</span>
+          <input type="number" class="field-input" id="cycleLengthInput" value="28" min="20" max="40">
+        </div>
+      </div>
+      <div class="cycle-forecast" id="cycleForecast">🩸 <span class="big">Nastav datum pro výpočet předpovědi</span></div>
+      <div class="seg-row" id="cycleRow">
+        <button class="seg-btn" data-c="1">Menstruace</button>
+        <button class="seg-btn sel" data-c="2">Folikulární</button>
+        <button class="seg-btn" data-c="3">Ovulace</button>
+        <button class="seg-btn" data-c="4">Luteální</button>
+      </div>
+    </div>
+
+    <div class="quick-grid">
+      <button class="quick-btn" onclick="openModal('cviceni')">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M4 9l3-3M17 20l3-3M2.5 7.5l2-2a1.5 1.5 0 012 0l1 1M20.5 16.5l-2 2a1.5 1.5 0 01-2 0l-1-1M8 6l2-2M16 18l2-2"/></svg>
+        <span>Zapsat cvičení</span>
+      </button>
+      <button class="quick-btn" onclick="openModal('konicky')">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19l7-16 2 4 3-2 4 14z"/><path d="M9 15h7"/></svg>
+        <span>Koníčky a relax</span>
+      </button>
+      <button class="quick-btn" onclick="openModal('uceni')">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C6 4.5 9 4 12 5.5c3-1.5 6-1 8 0v13c-2-1-5-1.5-8 0-3-1.5-6-1-8 0z"/></svg>
+        <span>Zóna učení</span>
+      </button>
+      <button class="quick-btn" onclick="openModal('vaha')">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7"/><path d="M9 4h6M12 8v1M12 13l3-3"/></svg>
+        <span>Dnešní váha</span>
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💧 Pitný režim</div>
+      <div class="glass-row" id="glassRow"></div>
+      <div class="muted" id="waterLabel">1.0 l vypito z cíle 2.0 l</div>
+
+      <div style="height:1px;background:rgba(10,51,35,0.08);margin:16px 0;"></div>
+
+      <div class="card-title">😴 Spánek</div>
+      <div class="stepper">
+        <button class="step-btn" onclick="changeSleep(-0.5)">−</button>
+        <div class="step-val" id="sleepVal">7.5 h</div>
+        <button class="step-btn" onclick="changeSleep(0.5)">+</button>
+      </div>
+    </div>
+
+    <div class="card-dark">
+      <div class="card-title" style="color:var(--beige);">🌙 Večerní reflexe — poznámky ke dni</div>
+      <textarea class="gratitude-input" id="eveningNotes" style="height:80px;resize:none;margin-bottom:0;" placeholder="Co se dnes dělo, jak ses cítila, co tě napadlo..."></textarea>
+    </div>
+
+  </div>
+
+  <div class="screen" id="screen-kalendar">
+    <h2 style="margin-bottom:14px;">Chytrý kalendář & cyklus</h2>
+
+    <div class="cal-head">
+      <button class="cal-arrow" onclick="shiftMonth(-1)">‹</button>
+      <div class="headline" id="calMonthLabel" style="font-size:15px;"></div>
+      <button class="cal-arrow" onclick="shiftMonth(1)">›</button>
+    </div>
+
+    <div class="weekdays"><span>Po</span><span>Út</span><span>St</span><span>Čt</span><span>Pá</span><span>So</span><span>Ne</span></div>
+    <div class="caldays" id="calDays"></div>
+
+    <div class="cycle-strip" id="calCycleStrip"></div>
+
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-dot" style="background:#eccbcc;"></div>Špatná nálada</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e2e8bc;"></div>Pohoda</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#b2d888;"></div>Skvělý den</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#fff;border:2px solid #d35d47;"></div>Menstruace 🩸</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#fff;border:2px dashed var(--teal);"></div>Ovulace ✨</div>
+    </div>
+
+    <div class="legend-row" style="margin-top:0px;border-top:1px solid rgba(10,51,35,0.08);padding-top:10px;">
+      <div class="legend-item"><span class="legend-icon"><svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M4 9l3-3M17 20l3-3M2.5 7.5l2-2a1.5 1.5 0 012 0l1 1M20.5 16.5l-2 2a1.5 1.5 0 01-2 0l-1-1M8 6l2-2M16 18l2-2"/></svg></span> cvičení</div>
+      <div class="legend-item"><span class="legend-icon"><svg viewBox="0 0 24 24"><path d="M4 5.5C6 4.5 9 4 12 5.5c3-1.5 6-1 8 0v13c-2-1-5-1.5-8 0-3-1.5-6-1-8 0z"/></svg></span> učení</div>
+      <div class="legend-item"><span class="legend-icon"><svg viewBox="0 0 24 24"><path d="M4 19l7-16 2 4 3-2 4 14z"/><path d="M9 15h7"/></svg></span> koníčky</div>
+      <div class="legend-item"><span class="legend-icon"><svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></span> pitný režim</div>
+    </div>
+
+    <div class="day-detail" id="dayDetail" style="display:none;"></div>
+  </div>
+
+  <div class="screen" id="screen-pokrok">
+    <h2 style="margin-bottom:14px;">Můj pokrok</h2>
+
+    <div class="card">
+      <div class="card-title">📸 Časová osa postavy</div>
+      <div class="muted" style="margin-bottom:10px;">Vlevo vidíš historický záznam zpřed měsíce pro srovnání. Vpravo nahrávej nové aktuální fotky.</div>
+      <div class="transform-row">
+        <div class="upload-slot" id="transformSlotPast">
+          <div class="tag" id="pastTag">Před měsícem</div>
+          <div class="lock-overlay" id="pastLock">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>Historie se zamkne automaticky po nahrání</span>
+          </div>
+        </div>
+        <div class="upload-slot clickable" id="transformSlotCurrent" onclick="document.getElementById('transformFileCurrent').click()">
+          <div class="tag">Aktuální</div>
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="9" cy="12" r="2.2"/><path d="M21 17l-5-5-4 4-3-3-4 4"/></svg>
+          <span>Klepnutím nahraješ dnešní fotku</span>
+          <input type="file" accept="image/*" id="transformFileCurrent" style="display:none;" onchange="handleNewTransformPhoto(this)">
+        </div>
+      </div>
+      <button class="archive-btn" onclick="openModal('fotoArchiv')">🗂️ Otevřít kompletní archiv fotek (<span id="photoCountVal">0</span>)</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🖼️ Tematické složky</div>
+      <div class="muted" style="margin-bottom:10px;">Třidi si inspiraci, zdravé recepty nebo pokroky ve fitness do vlastních alb.</div>
+      <div class="new-folder-row">
+        <input type="text" id="newFolderInput" placeholder="Název nové složky">
+        <button onclick="createFolder()">+ Vytvořit</button>
+      </div>
+      <div id="folderList"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚖️ Reálný vývoj váhy</div>
+      <div class="chart-wrap"><svg id="weightChart" viewBox="0 0 320 150" width="100%" height="150"></svg></div>
+      <div class="chart-legend" id="weightStatsRow" style="font-size:12px;font-weight:700;color:var(--teal);justify-content:space-between;width:100%;">
+        <span>Počáteční: 72.0 kg</span>
+        <span id="currentWeightDisplay">Aktuální: -- kg</span>
+        <span>Cíl: 63.0 kg</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⏱️ Zapsané aktivity (tento týden)</div>
+      <div class="donut-row">
+        <div class="donut" id="timeDonut"></div>
+        <div class="donut-legend" id="timeDonutLegend">
+          <div class="li"><div class="dot" style="background:var(--moss);"></div>Cvičení — 0 h</div>
+          <div class="li"><div class="dot" style="background:var(--teal);"></div>Učení — 0 h</div>
+          <div class="li"><div class="dot" style="background:var(--rose);"></div>Koníčky — 0 h</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏅 Síň slávy & osobní výzvy</div>
+      <div class="muted" style="margin-bottom:10px;">Všechny výzvy jsou na začátku zamčené. Zaznamenávej aktivity a vodu, systém ti je bude automaticky odemykat!</div>
+      <div class="badge-grid" id="badgeGrid"></div>
+      <button class="add-badge-btn" onclick="openModal('novyOdznak')">＋ Přidat vlastní výzvu se sledováním</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-profil">
+    <h2 style="margin-bottom:14px;">Profil a nastavení</h2>
+
+    <div class="profile-top" onclick="openProfileEdit()">
+      <div class="avatar" id="profileAvatar">EM</div>
+      <div style="flex:1;">
+        <h3 style="font-size:17px;" id="profileName">Ema Nováková</h3>
+        <div class="muted" id="profileMotto" style="font-size:12px;">„Krok za krokem ke svému lepšímu já.“</div>
+        <div class="edit-tag">✎ Upravit osobní profil a vzhled</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎯 Týdenní a dlouhodobé cíle</div>
+      <div class="goal-row">
+        <div class="goal-label">Cílová váha<span class="sub">tvé vysněné číslo</span></div>
+        <input class="goal-input" id="goalWeight" value="63 kg">
+      </div>
+      <div class="goal-row">
+        <div class="goal-label">Pitný režim<span class="sub">denní cíl vody</span></div>
+        <input class="goal-input" id="goalWater" value="2.0 l">
+      </div>
+      <div class="goal-row">
+        <div class="goal-label">Čas na učení<span class="sub">cílový čas za týden</span></div>
+        <input class="goal-input" id="goalStudy" value="5 h">
+      </div>
+      <div class="goal-row">
+        <div class="goal-label">Čas na cvičení<span class="sub">cílový čas za týden</span></div>
+        <input class="goal-input" id="goalExercise" value="4 h">
+      </div>
+      <button class="save-btn" onclick="saveGoals()">Uložit cíle a přepočítat grafy</button>
+    </div>
+
+    <div class="card-dark">
+      <div class="card-title" style="color:var(--beige);justify-content:space-between;">
+        <span>🔔 Chytrá upozornění</span>
+        <button onclick="requestSystemNotifications()" style="background:var(--moss);border:none;border-radius:10px;padding:4px 8px;font-size:10px;font-weight:700;color:var(--dark);cursor:pointer;">Povolit v telefonu</button>
+      </div>
+      <div class="muted" style="margin-bottom:10px;font-size:11px;">Notifikace fungují i na pozadí telefonu, pokud je povolíš tlačítkem výše.</div>
+      
+      <div class="notif-row">
+        <div>
+          <div style="font-weight:700;font-size:12.5px;">Ranní nakopnutí</div>
+          <div class="muted">Motivace na start dne</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <input type="time" class="time-input" id="notifMorningTime" value="07:00">
+          <label class="toggle"><input type="checkbox" id="notifMorningToggle" checked><span class="slider-toggle"></span></label>
+        </div>
+      </div>
+      <div class="notif-row">
+        <div>
+          <div style="font-weight:700;font-size:12.5px;">Pitný režim</div>
+          <div class="muted">Odpolední připomenutí vody</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <input type="time" class="time-input" id="notifWaterTime" value="14:30">
+          <label class="toggle"><input type="checkbox" id="notifWaterToggle" checked><span class="slider-toggle"></span></label>
+        </div>
+      </div>
+      <div class="notif-row">
+        <div>
+          <div style="font-weight:700;font-size:12.5px;">Večerní deník</div>
+          <div class="muted">Čas na zápis reflexe</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <input type="time" class="time-input" id="notifEveningTime" value="21:00">
+          <label class="toggle"><input type="checkbox" id="notifEveningToggle" checked><span class="slider-toggle"></span></label>
+        </div>
+      </div>
+      <div class="notif-row">
+        <div>
+          <div style="font-weight:700;font-size:12.5px;">🩸 Předpověď menstruace</div>
+          <div class="muted">Diskrétní varování předem</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <select class="time-input" id="periodWarnDays" style="padding:6px 10px;">
+            <option value="1">1 den před</option>
+            <option value="2" selected>2 dny před</option>
+            <option value="3">3 dny před</option>
+            <option value="5">5 dní před</option>
+          </select>
+          <label class="toggle"><input type="checkbox" id="periodNotifToggle" checked><span class="slider-toggle"></span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottomnav">
+    <button class="navbtn active" data-screen="dnes">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v8a2 2 0 01-2 2H6a2 2 0 01-2-2z"/></svg>
+      <span>Dnes</span>
+    </button>
+    <button class="navbtn" data-screen="kalendar">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></svg>
+      <span>Kalendář</span>
+    </button>
+    <button class="navbtn" data-screen="pokrok">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M11 20V4M18 20v-7"/></svg>
+      <span>Můj pokrok</span>
+    </button>
+    <button class="navbtn" data-screen="profil">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6"/></svg>
+      <span>Profil</span>
+    </button>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-sheet" id="modalSheet"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ---------- PERSISTENT STORAGE & CORE DATA ---------- */
+function saveLS(key, val){ try{ localStorage.setItem('balanc_'+key, JSON.stringify(val)); }catch(e){} }
+function loadLS(key, fallback){
+  try{
+    const raw = localStorage.getItem('balanc_'+key);
+    return raw===null ? fallback : JSON.parse(raw);
+  }catch(e){ return fallback; }
+}
+
+// Clock logic
+setInterval(()=>{
+  const now = new Date();
+  document.getElementById('clockTime').textContent = now.getHours() + ":" + String(now.getMinutes()).padStart(2,'0');
+}, 1000);
+
+// Set current date string
+const daysCz = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
+const monthsCz = ["ledna", "února", "března", "dubna", "května", "června", "července", "srpna", "září", "října", "listopadu", "prosince"];
+const todayDateObj = new Date();
+document.getElementById('currentDateDisplay').textContent = `${daysCz[todayDateObj.getDay()]}, ${todayDateObj.getDate()}. ${monthsCz[todayDateObj.getMonth()]}`;
+
+/* ---------- TAB NAVIGATION ---------- */
+const navBtns = document.querySelectorAll('.navbtn');
+navBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    navBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('screen-'+btn.dataset.screen).classList.add('active');
+    
+    if(btn.dataset.screen === 'kalendar') renderCalendar();
+    if(btn.dataset.screen === 'pokrok') { renderWeightChart(); renderDonutChart(); renderBadges(); renderTransformSection(); }
+  });
+});
+
+/* ---------- MOOD (SAVES TO CALENDAR BY DATE) ---------- */
+const moodMessages = {
+  1:"Dnes to nevypadá nejlíp — buď na sebe hodná, i malý krok se počítá. 🌧️",
+  2:"Neutrální den? V pohodě, stačí se soustředit na základy. 🌥️",
+  3:"Dnes se ti daří skvěle — drž tempo, tělo i mysl ti poděkují. 🌤️",
+  4:"Skvělá energie! Skvělý den na to pustit se do něčeho navíc. ☀️",
+  5:"Jsi na vlně! Využij tu energii naplno. ✨"
+};
+function selectMood(mood, save){
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.toggle('sel', b.dataset.mood===String(mood)));
+  document.getElementById('motivationBox').innerHTML = '✨ <span>'+moodMessages[mood]+'</span>';
+  if(save) {
+    saveLS('mood', mood);
+    const todayStr = new Date().toISOString().split('T')[0];
+    let moods = loadLS('dailyMoods', {});
+    moods[todayStr] = mood;
+    saveLS('dailyMoods', moods);
+    logActivity('mood', `Nálada zapsána: ${mood}/5`);
+    if(document.getElementById('screen-kalendar').classList.contains('active')) renderCalendar();
+  }
+}
+document.querySelectorAll('.mood-btn').forEach(btn=> btn.addEventListener('click', ()=> selectMood(btn.dataset.mood, true)));
+selectMood(loadLS('mood','3'), false);
+
+/* ---------- BATTERY / ENERGY ---------- */
+const energyRange = document.getElementById('energyRange');
+const batteryFill = document.getElementById('batteryFill');
+const energyVal = document.getElementById('energyVal');
+energyRange.value = loadLS('energy', 65);
+batteryFill.style.width = energyRange.value+'%';
+energyVal.textContent = energyRange.value+' %';
+energyRange.addEventListener('input', ()=>{
+  batteryFill.style.width = energyRange.value+'%';
+  energyVal.textContent = energyRange.value+' %';
+  saveLS('energy', energyRange.value);
+});
+
+/* ---------- CYCLE FORECAST & INTEGRATION ---------- */
+const lastPeriodInput = document.getElementById('lastPeriodInput');
+const cycleLengthInput = document.getElementById('cycleLengthInput');
+const cycleForecast = document.getElementById('cycleForecast');
+
+function updateCycleForecast(){
+  const dateVal = lastPeriodInput.value;
+  const cycleLen = parseInt(cycleLengthInput.value)||28;
+  saveLS('lastPeriod', dateVal);
+  saveLS('cycleLength', cycleLen);
+  
+  if(!dateVal){
+    cycleForecast.classList.remove('soon');
+    cycleForecast.innerHTML = '🩸 <span class="big">Nastav datum poslední menstruace pro předpověď</span>';
+    return;
+  }
+  const last = new Date(dateVal+'T00:00:00');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const msDay = 24*60*60*1000;
+  let daysSince = Math.floor((today-last)/msDay);
+  let cycleDay = ((daysSince % cycleLen) + cycleLen) % cycleLen;
+  const daysUntilNext = cycleLen - cycleDay;
+  const nextDate = new Date(today.getTime() + daysUntilNext*msDay);
+  const dd = String(nextDate.getDate()).padStart(2,'0');
+  const mm = String(nextDate.getMonth()+1).padStart(2,'0');
+
+  let idx = (cycleDay < 5) ? '1' : (cycleDay < cycleLen - 14 - 2) ? '2' : (cycleDay <= cycleLen - 14 + 2) ? '3' : '4';
+  document.querySelectorAll('#cycleRow .seg-btn').forEach(b=>b.classList.toggle('sel', b.dataset.c===idx));
+
+  if(daysUntilNext<=3){
+    cycleForecast.classList.add('soon');
+    cycleForecast.innerHTML = `🩸 <span class="big">Menstruace očekávána za ${daysUntilNext} ${daysUntilNext===1?'den':'dny'} (${dd}.${mm}.)</span>`;
+  } else {
+    cycleForecast.classList.remove('soon');
+    cycleForecast.innerHTML = `🩸 <span class="big">Další menstruace: ${dd}.${mm}. (za ${daysUntilNext} dní) · den cyklu ${cycleDay+1}/${cycleLen}</span>`;
+  }
+  if(document.getElementById('screen-kalendar').classList.contains('active')) renderCalendar();
+}
+lastPeriodInput.value = loadLS('lastPeriod','');
+cycleLengthInput.value = loadLS('cycleLength',28);
+lastPeriodInput.addEventListener('change', updateCycleForecast);
+cycleLengthInput.addEventListener('change', updateCycleForecast);
+updateCycleForecast();
+
+/* ---------- WATER GLASSES ---------- */
+const glassRow = document.getElementById('glassRow');
+const totalGlasses = 8;
+let filledGlasses = loadLS('waterGlasses', 4);
+function glassSVG(filled){
+  return `<svg viewBox="0 0 24 30"><path d="M4 2h16l-2.2 24a2 2 0 01-2 1.8H8.2A2 2 0 016.2 26z" fill="none" stroke="${filled? 'var(--teal)':'var(--dark)'}" stroke-width="1.6"/>${filled? '<path d="M5.2 12h13.6l-1.5 15.6a1.6 1.6 0 01-1.6 1.4H8.3a1.6 1.6 0 01-1.6-1.4z" fill="var(--teal)" opacity="0.85"/>':''}</svg>`;
+}
+function renderGlasses(){
+  glassRow.innerHTML='';
+  for(let i=0;i<totalGlasses;i++){
+    const div = document.createElement('div');
+    div.className='glass';
+    div.innerHTML = glassSVG(i<filledGlasses);
+    div.addEventListener('click', ()=>{ 
+      filledGlasses = i+1; renderGlasses(); saveLS('waterGlasses', filledGlasses); 
+      let totalLiters = loadLS('totalWaterLiters', 10);
+      totalLiters += 0.25;
+      saveLS('totalWaterLiters', totalLiters);
+      logActivity('water', `Vypito: ${(filledGlasses*0.25).toFixed(2)} l vody`);
+      evaluateBadges();
+    });
+    glassRow.appendChild(div);
+  }
+  const targetWater = parseFloat(loadLS('goalWater','2.0')) || 2.0;
+  document.getElementById('waterLabel').textContent = `${(filledGlasses*0.25).toFixed(2).replace('.0','')} l vypito z cíle ${targetWater} l`;
+}
+renderGlasses();
+
+/* ---------- SLEEP STEPPER ---------- */
+let sleepHours = loadLS('sleepHours', 7.5);
+document.getElementById('sleepVal').textContent = sleepHours+' h';
+function changeSleep(delta){
+  sleepHours = Math.max(0, Math.min(14, sleepHours+delta));
+  document.getElementById('sleepVal').textContent = sleepHours+' h';
+  saveLS('sleepHours', sleepHours);
+  logActivity('sleep', `Délka spánku: ${sleepHours} h`);
+}
+
+/* ---------- EVENING NOTES ---------- */
+const eveningNotes = document.getElementById('eveningNotes');
+eveningNotes.value = loadLS('eveningNotes','');
+eveningNotes.addEventListener('input', ()=>{
+  saveLS('eveningNotes', eveningNotes.value);
+  logActivity('note', eveningNotes.value);
+});
+
+/* ---------- LOGGING ENGINE ---------- */
+function logActivity(type, detail, minutes = 0){
+  let logs = loadLS('dailyLogs', {});
+  const dateKey = new Date().toISOString().split('T')[0];
+  if(!logs[dateKey]) logs[dateKey] = [];
+  
+  logs[dateKey].push({
+    time: new Date().toLocaleTimeString('cs-CZ', {hour:'2-digit', minute:'2-digit'}),
+    type: type,
+    detail: detail,
+    minutes: Number(minutes)
+  });
+  saveLS('dailyLogs', logs);
+  
+  if(minutes > 0) {
+    let totals = loadLS('activityTotals', {cviceni:0, uceni:0, konicky:0});
+    if(type==='cviceni') totals.cviceni += Number(minutes);
+    if(type==='uceni') totals.uceni += Number(minutes);
+    if(type==='konicky') totals.konicky += Number(minutes);
+    saveLS('activityTotals', totals);
+  }
+  evaluateBadges();
+}
+
+/* ---------- CALENDAR (MOOD + CYCLE INTEGRATED & BIG ICONS) ---------- */
+let calDate = new Date();
+const monthNames = ["Leden","Únor","Březen","Duben","Květen","Červen","Červenec","Srpen","Září","Říjen","Listopad","Prosinec"];
+
+const iconSVGs = {
+  cviceni: `<svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M4 9l3-3M17 20l3-3M2.5 7.5l2-2a1.5 1.5 0 012 0l1 1M20.5 16.5l-2 2a1.5 1.5 0 01-2 0l-1-1M8 6l2-2M16 18l2-2"/></svg>`,
+  uceni: `<svg viewBox="0 0 24 24"><path d="M4 5.5C6 4.5 9 4 12 5.5c3-1.5 6-1 8 0v13c-2-1-5-1.5-8 0-3-1.5-6-1-8 0z"/></svg>`,
+  konicky: `<svg viewBox="0 0 24 24"><path d="M4 19l7-16 2 4 3-2 4 14z"/><path d="M9 15h7"/></svg>`,
+  water: `<svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`
+};
+
+function renderCalendar(){
+  const y = calDate.getFullYear(), m = calDate.getMonth();
+  document.getElementById('calMonthLabel').textContent = monthNames[m]+" "+y;
+  const first = new Date(y,m,1);
+  let startOffset = (first.getDay()+6)%7;
+  const daysInMonth = new Date(y,m+1,0).getDate();
+  const grid = document.getElementById('calDays');
+  grid.innerHTML='';
+  
+  const lastPeriodStr = loadLS('lastPeriod', '');
+  const cycleLen = parseInt(loadLS('cycleLength', 28)) || 28;
+  const lastP = lastPeriodStr ? new Date(lastPeriodStr+'T00:00:00') : null;
+  const logs = loadLS('dailyLogs', {});
+  const moods = loadLS('dailyMoods', {});
+
+  for(let i=0;i<startOffset;i++){
+    const e = document.createElement('div'); e.className='day-cell empty'; grid.appendChild(e);
+  }
+  
+  for(let d=1; d<=daysInMonth; d++){
+    const cellDate = new Date(y, m, d);
+    const dateKey = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const cell = document.createElement('button');
+    cell.className='day-cell';
+    
+    if(cellDate.toDateString() === new Date().toDateString()) cell.classList.add('today');
+
+    // 1. Zabarvení podle nálady
+    const dayMood = moods[dateKey];
+    if(dayMood) {
+      cell.classList.add('mood-'+dayMood);
+    }
+
+    // 2. Propojení s menstruací (přidá výrazný rámeček a ikonku kapky v rohu, barva nálady zůstává)
+    if(lastP){
+      const diffDays = Math.floor((cellDate - lastP)/(1000*60*60*24));
+      const cycleDay = ((diffDays % cycleLen) + cycleLen) % cycleLen;
+      if(cycleDay < 5) cell.classList.add('period-day');
+      else if(cycleDay >= cycleLen - 16 && cycleDay <= cycleLen - 12) cell.classList.add('ovulation-day');
+    }
+
+    // 3. Zvětšené ikony zápisů (16px místo 10px)
+    let iconsHtml = '';
+    const dayLogs = logs[dateKey] || [];
+    if(dayLogs.some(l => l.type === 'cviceni')) iconsHtml += iconSVGs.cviceni;
+    if(dayLogs.some(l => l.type === 'uceni')) iconsHtml += iconSVGs.uceni;
+    if(dayLogs.some(l => l.type === 'konicky')) iconsHtml += iconSVGs.konicky;
+    if(dayLogs.some(l => l.type === 'water')) iconsHtml += iconSVGs.water;
+
+    cell.innerHTML = `<div>${d}</div><div class="icons">${iconsHtml}</div>`;
+    cell.addEventListener('click', ()=>showDayDetail(d,m,y,dateKey));
+    grid.appendChild(cell);
+  }
+}
+
+function showDayDetail(d,m,y,dateKey){
+  const panel = document.getElementById('dayDetail');
+  panel.style.display='block';
+  const logs = loadLS('dailyLogs', {});
+  const dayLogs = logs[dateKey] || [];
+  
+  let content = `<h4><span>📅 ${d}. ${monthNames[m]} ${y}</span><button onclick="document.getElementById('dayDetail').style.display='none'" style="background:none;border:none;color:var(--beige);cursor:pointer;font-weight:700;">✕</button></h4>`;
+  
+  if(dayLogs.length === 0){
+    content += `<div class="entry" style="color:rgba(247,244,213,0.6);">Zatím žádné zápisy pro tento den. Klepni na rychlá tlačítka na záložce Dnes!</div>`;
+  } else {
+    dayLogs.forEach(log => {
+      let icon = log.type === 'cviceni' ? '💪' : log.type === 'uceni' ? '📖' : log.type === 'konicky' ? '🧵' : log.type === 'vaha' ? '⚖️' : '✨';
+      content += `<div class="entry"><b>${log.time} ${icon}</b> — ${log.detail}</div>`;
+    });
+  }
+  panel.innerHTML = content;
+}
+function shiftMonth(delta){
+  calDate.setMonth(calDate.getMonth()+delta);
+  document.getElementById('dayDetail').style.display='none';
+  renderCalendar();
+}
+
+/* ---------- PROGRESS PHOTOS ---------- */
+function handleNewTransformPhoto(inputEl){
+  const file = inputEl.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const dataUrl = e.target.result;
+    let archive = loadLS('photoArchive', []);
+    archive.push({ date: new Date().toISOString(), url: dataUrl });
+    saveLS('photoArchive', archive);
+    showToast('Nová fotka přidána do časové osy 📸');
+    renderTransformSection();
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderTransformSection(){
+  const archive = loadLS('photoArchive', []);
+  document.getElementById('photoCountVal').textContent = archive.length;
+  
+  const currentSlot = document.getElementById('transformSlotCurrent');
+  const pastSlot = document.getElementById('transformSlotPast');
+  const pastLock = document.getElementById('pastLock');
+  
+  if(archive.length > 0){
+    const latest = archive[archive.length - 1];
+    currentSlot.style.backgroundImage = `url(${latest.url})`;
+    currentSlot.classList.add('filled');
+  } else {
+    currentSlot.style.backgroundImage = 'none';
+    currentSlot.classList.remove('filled');
+  }
+
+  if(archive.length > 1){
+    pastLock.style.display = 'none';
+    const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
+    let historical = archive.find(p => new Date(p.date).getTime() <= thirtyDaysAgo) || archive[0];
+    pastSlot.style.backgroundImage = `url(${historical.url})`;
+    pastSlot.classList.add('filled');
+    
+    const d = new Date(historical.date);
+    document.getElementById('pastTag').textContent = `${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}`;
+  } else {
+    pastLock.style.display = 'flex';
+    pastSlot.style.backgroundImage = 'none';
+    pastSlot.classList.remove('filled');
+  }
+}
+renderTransformSection();
+
+/* ---------- REAL DYNAMIC WEIGHT CHART ---------- */
+function renderWeightChart(){
+  const svg = document.getElementById('weightChart');
+  let logs = loadLS('weightLogs', [
+    {date: '01.07', val: 72.0}, {date: '05.07', val: 71.6}, {date: '10.07', val: 71.2}, 
+    {date: '15.07', val: 70.8}, {date: '20.07', val: 70.2}
+  ]);
+  
+  const pts = logs.map(l => l.val);
+  if(pts.length > 0) {
+    document.getElementById('currentWeightDisplay').textContent = `Aktuální: ${pts[pts.length-1]} kg`;
+  }
+
+  const max = Math.max(...pts, 73), min = Math.min(...pts, 62);
+  const w = 320, h = 150, pad = 20;
+  const stepX = (w - 2 * pad) / (pts.length - 1 || 1);
+  const coords = pts.map((v, i) => {
+    const x = pad + i * stepX;
+    const y = h - pad - ((v - min) / (max - min || 1)) * (h - 2 * pad);
+    return [x, y];
+  });
+
+  let path = `M ${coords[0][0]} ${coords[0][1]} `;
+  for(let i = 0; i < coords.length - 1; i++){
+    const [x0, y0] = coords[i], [x1, y1] = coords[i+1];
+    const mx = (x0 + x1) / 2;
+    path += `C ${mx} ${y0}, ${mx} ${y1}, ${x1} ${y1} `;
+  }
+
+  const bands = `
+    <rect x="0" y="0" width="100" height="150" fill="#D3968C" opacity="0.10"/>
+    <rect x="100" y="0" width="120" height="150" fill="#839958" opacity="0.10"/>
+    <rect x="220" y="0" width="100" height="150" fill="#105666" opacity="0.08"/>
+  `;
+  const dots = coords.map(([x,y], idx)=>`<circle cx="${x}" cy="${y}" r="4.5" fill="#105666" stroke="#F7F4D5" stroke-width="2"><title>${logs[idx].date}: ${logs[idx].val} kg</title></circle>`).join('');
+  svg.innerHTML = bands + `<path d="${path}" fill="none" stroke="#0A3323" stroke-width="3" stroke-linecap="round"/>` + dots;
+}
+renderWeightChart();
+
+/* ---------- REAL DYNAMIC TIME DONUT ---------- */
+function renderDonutChart(){
+  const totals = loadLS('activityTotals', {cviceni: 120, uceni: 90, konicky: 60});
+  const totalMin = totals.cviceni + totals.uceni + totals.konicky || 1;
+  
+  const pCvi = Math.round((totals.cviceni / totalMin) * 100);
+  const pUce = Math.round((totals.uceni / totalMin) * 100);
+  const pKon = 100 - pCvi - pUce;
+
+  const donut = document.getElementById('timeDonut');
+  donut.style.background = `conic-gradient(var(--moss) 0% ${pCvi}%, var(--teal) ${pCvi}% ${pCvi+pUce}%, var(--rose) ${pCvi+pUce}% 100%)`;
+  
+  document.getElementById('timeDonutLegend').innerHTML = `
+    <div class="li"><div class="dot" style="background:var(--moss);"></div>Cvičení — ${(totals.cviceni/60).toFixed(1)} h (${pCvi} %)</div>
+    <div class="li"><div class="dot" style="background:var(--teal);"></div>Učení — ${(totals.uceni/60).toFixed(1)} h (${pUce} %)</div>
+    <div class="li"><div class="dot" style="background:var(--rose);"></div>Koníčky — ${(totals.konicky/60).toFixed(1)} h (${pKon} %)</div>
+  `;
+}
+renderDonutChart();
+
+/* ---------- HALL OF FAME (RESET BADGES & SMART AUTO-TRACKING) ---------- */
+// Všechny výzvy jsou nyní defaultně uzamčené (unlocked: false)
+const defaultBadges = [
+  {id:'b1', icon:'📚', name:'Knižní mol', unlocked:false, desc:'180 min v Zóně učení', metric:'uceni_min', target: 180},
+  {id:'b2', icon:'🧵', name:'Královna šití', unlocked:false, desc:'120 min na koníčkách', metric:'konicky_min', target: 120},
+  {id:'b3', icon:'💪', name:'Fitness hvězda', unlocked:false, desc:'3 zapsané tréninky', metric:'cviceni_count', target: 3},
+  {id:'b4', icon:'🧘', name:'Zenový mistr', unlocked:false, desc:'180 min relaxu/koníčků', metric:'konicky_min', target: 180},
+  {id:'b5', icon:'💧', name:'Hydratační guru', unlocked:false, desc:'Vypito celkem 15 l vody', metric:'water_liters', target: 15},
+  {id:'b6', icon:'🔥', name:'Železná vůle', unlocked:false, desc:'300 minut cvičení', metric:'cviceni_min', target: 300},
+  {id:'b7', icon:'🌍', name:'Polyglot', unlocked:false, desc:'300 min v Zóně učení', metric:'uceni_min', target: 300},
+  {id:'b8', icon:'⚡', name:'Akční start', unlocked:false, desc:'První zapsaný trénink', metric:'cviceni_count', target: 1}
+];
+
+function renderBadges(){
+  const badges = loadLS('userBadges_v3', defaultBadges);
+  const grid = document.getElementById('badgeGrid');
+  grid.innerHTML = badges.map(b => `
+    <div class="badge" onclick="showToast('${b.unlocked ? '🎉 Splněno! ' : '🔒 Milník: '}${b.desc}')">
+      <div class="badge-circle ${b.unlocked ? 'unlocked' : 'locked'}">${b.icon}</div>
+      <span>${b.name}</span>
+    </div>
+  `).join('');
+}
+renderBadges();
+
+// Automatický rozhodčí: zkontroluje pokrok a odemkne výzvy
+function evaluateBadges(){
+  const totals = loadLS('activityTotals', {cviceni:120, uceni:90, konicky:60});
+  const waterLiters = loadLS('totalWaterLiters', 10);
+  const logs = loadLS('dailyLogs', {});
+  let cviceniCount = 0;
+  Object.values(logs).forEach(day => {
+    cviceniCount += day.filter(l => l.type === 'cviceni').length;
+  });
+
+  let badges = loadLS('userBadges_v3', defaultBadges);
+  let changed = false;
+
+  badges.forEach(b => {
+    if (!b.unlocked && b.metric && b.target) {
+      let current = 0;
+      if (b.metric === 'cviceni_min') current = totals.cviceni;
+      if (b.metric === 'uceni_min') current = totals.uceni;
+      if (b.metric === 'konicky_min') current = totals.konicky;
+      if (b.metric === 'water_liters') current = waterLiters;
+      if (b.metric === 'cviceni_count') current = cviceniCount;
+
+      if (current >= b.target) {
+        b.unlocked = true;
+        changed = true;
+        setTimeout(()=>showToast(`🎉 Výzva splněna: ${b.name}!`), 500);
+      }
+    }
+  });
+
+  if (changed) {
+    saveLS('userBadges_v3', badges);
+    renderBadges();
+  }
+}
+
+/* ---------- GALLERY / FOLDERS ---------- */
+let galleryData = loadLS('gallery', { "Zdrávé recepty": [], "Inspirace na cvičení": [] });
+function saveGallery(){ saveLS('gallery', galleryData); }
+function createFolder(){
+  const input = document.getElementById('newFolderInput');
+  const name = input.value.trim();
+  if(!name) return;
+  if(!galleryData[name]) galleryData[name] = [];
+  input.value='';
+  saveGallery();
+  renderFolders();
+  showToast('Složka byla vytvořena 📁');
+}
+let openFolder = null;
+function toggleFolder(name){
+  openFolder = (openFolder===name) ? null : name;
+  renderFolders();
+}
+function triggerFolderUpload(name){
+  const inp = document.createElement('input');
+  inp.type='file'; inp.accept='image/*';
+  inp.onchange = ()=>{
+    const file = inp.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = e=>{
+      galleryData[name].push(e.target.result);
+      saveGallery();
+      renderFolders();
+      showToast('Fotka uložena do složky 🖼️');
+    };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+function renderFolders(){
+  const list = document.getElementById('folderList');
+  const names = Object.keys(galleryData);
+  if(names.length===0){
+    list.innerHTML = '<div class="empty-hint">Zatím žádné složky — vytvoř první výše ☝️</div>';
+    return;
+  }
+  list.innerHTML = names.map(name=>{
+    const photos = galleryData[name];
+    const isOpen = openFolder===name;
+    let photosHtml='';
+    if(isOpen){
+      photosHtml = '<div class="folder-photos">' +
+        photos.map(p=>`<div class="ph" style="background-image:url(${p})"></div>`).join('') +
+        `<button class="folder-add" onclick="triggerFolderUpload('${name.replace(/'/g,"\\'")}')">+</button>` +
+        '</div>';
+    }
+    return `<div class="folder">
+      <div class="folder-head" onclick="toggleFolder('${name.replace(/'/g,"\\'")}')">
+        <div class="name">📁 ${name}</div>
+        <div class="count">${photos.length} ${isOpen? '▲':'▼'}</div>
+      </div>
+      ${photosHtml}
+    </div>`;
+  }).join('');
+}
+renderFolders();
+
+/* ---------- MODAL & PROFILE EDITING ---------- */
+const overlay = document.getElementById('modalOverlay');
+const sheet = document.getElementById('modalSheet');
+let swInterval=null, swSeconds=0, swRunning=false;
+
+function openProfileEdit(){
+  const name = loadLS('profileName', 'Ema Nováková');
+  const initials = loadLS('profileInitials', 'EM');
+  const motto = loadLS('profileMotto', '„Krok za krokem ke svému lepšímu já.“');
+  
+  sheet.innerHTML = `
+    <div class="modal-head"><h3>✎ Úprava osobního profilu</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="field"><span class="field-label">Tvé jméno</span><input class="field-input" id="editName" value="${name}"></div>
+    <div class="field"><span class="field-label">Iniciály na avataru (max 2 písmena)</span><input class="field-input" id="editInitials" maxlength="2" value="${initials}"></div>
+    <div class="field"><span class="field-label">Osobní motto / citát</span><input class="field-input" id="editMotto" value="${motto}"></div>
+    <button class="modal-save" onclick="saveProfileChanges()">Uložit změny v profilu</button>
+  `;
+  overlay.classList.add('show');
+}
+
+function saveProfileChanges(){
+  const name = document.getElementById('editName').value || 'Ema Nováková';
+  const initials = document.getElementById('editInitials').value.toUpperCase() || 'EM';
+  const motto = document.getElementById('editMotto').value;
+  
+  saveLS('profileName', name);
+  saveLS('profileInitials', initials);
+  saveLS('profileMotto', motto);
+  
+  updateProfileUI();
+  closeModal();
+  showToast('Profil byl úspěšně aktualizován ✨');
+}
+
+function updateProfileUI(){
+  const name = loadLS('profileName', 'Ema Nováková');
+  const initials = loadLS('profileInitials', 'EM');
+  const motto = loadLS('profileMotto', '„Krok za krokem ke svému lepšímu já.“');
+  
+  document.getElementById('mainAvatar').textContent = initials;
+  document.getElementById('profileAvatar').textContent = initials;
+  document.getElementById('mainGreeting').textContent = `Ahoj, ${name.split(' ')[0]}! 🌿`;
+  document.getElementById('profileName').textContent = name;
+  document.getElementById('profileMotto').textContent = motto;
+}
+updateProfileUI();
+
+// Pamatování vlastních typů cvičení a koníčků v rozbalovacích seznamech
+function getExerciseOptions(){
+  const defaults = ['Běh', 'Posilování', 'Jóga', 'Kolo', 'Plavání'];
+  const custom = loadLS('customExList', []);
+  const all = [...new Set([...defaults, ...custom])];
+  return all.map(o => `<option>${o}</option>`).join('') + `<option value="custom">+ Přidat vlastní typ...</option>`;
+}
+function getHobbyOptions(){
+  const defaults = ['Šití', 'Čtení', 'Malování', 'Hudba'];
+  const custom = loadLS('customHbList', []);
+  const all = [...new Set([...defaults, ...custom])];
+  return all.map(o => `<option>${o}</option>`).join('') + `<option value="custom">+ Přidat vlastní aktivitu...</option>`;
+}
+
+function openModal(type){
+  let html='';
+  if(type==='cviceni'){
+    html=`
+      <div class="modal-head"><h3>💪 Zapsat cvičení</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="field"><span class="field-label">Typ cvičení (vlastní se zapamatuje na příště)</span>
+        <select class="field-input" id="exType" onchange="toggleCustom(this,'customExercise')">
+          ${getExerciseOptions()}
+        </select>
+      </div>
+      <div class="custom-input-wrap" id="customExercise"><input class="field-input" id="customExVal" placeholder="Zadej vlastní název cvičení"></div>
+      <div class="field"><span class="field-label">Doba trvání (minuty)</span><input class="field-input" id="exMin" type="number" value="30"></div>
+      <div class="field"><span class="field-label">Intenzita</span>
+        <div class="seg-row">
+          <button class="seg-btn" onclick="pickSeg(this)">Nízká</button>
+          <button class="seg-btn sel" onclick="pickSeg(this)">Střední</button>
+          <button class="seg-btn" onclick="pickSeg(this)">Vysoká</button>
+        </div>
+      </div>
+      <div class="field"><span class="field-label">Poznámka</span><textarea class="field-input" id="exNote" placeholder="Jak jsi to zvládla?"></textarea></div>
+      <button class="modal-save" onclick="saveExerciseLog()">Uložit záznam</button>
+    `;
+  } else if(type==='konicky'){
+    html=`
+      <div class="modal-head"><h3>🧵 Koníčky a relax</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="field"><span class="field-label">Aktivita (vlastní se zapamatuje na příště)</span>
+        <select class="field-input" id="hbType" onchange="toggleCustom(this,'customHobby')">
+          ${getHobbyOptions()}
+        </select>
+      </div>
+      <div class="custom-input-wrap" id="customHobby"><input class="field-input" id="customHbVal" placeholder="Zadej vlastní název aktivity"></div>
+      <div class="stopwatch-row">
+        <div class="stopwatch-time" id="swTime">00:00</div>
+        <button class="stopwatch-btn" id="swBtn" onclick="toggleStopwatch()">Spustit stopky</button>
+      </div>
+      <div class="field"><span class="field-label">nebo ruční zadání času (minuty)</span><input class="field-input" id="hbMin" type="number" placeholder="např. 20"></div>
+      <div class="field"><span class="field-label">Poznámka</span><textarea class="field-input" id="hbNote" placeholder="Co sis užila?"></textarea></div>
+      <button class="modal-save" onclick="saveHobbyLog()">Uložit záznam</button>
+    `;
+  } else if(type==='uceni'){
+    html=`
+      <div class="modal-head"><h3>📖 Zóna učení</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="field"><span class="field-label">Předmět / kurz</span><input class="field-input" id="stType" placeholder="např. Angličtina, kurz UX"></div>
+      <div class="field"><span class="field-label">Doba trvání (minuty)</span><input class="field-input" id="stMin" type="number" value="25"></div>
+      <div class="field"><span class="field-label">Poznámka</span><textarea class="field-input" id="stNote" placeholder="Co ses naučila?"></textarea></div>
+      <button class="modal-save" onclick="saveStudyLog()">Uložit záznam</button>
+    `;
+  } else if(type==='vaha'){
+    html=`
+      <div class="modal-head"><h3>⚖️ Dnešní váha</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="field"><span class="field-label">Zadej aktuální váhu (kg)</span><input class="field-input" id="weightInputVal" type="number" step="0.1" value="68.4"></div>
+      <button class="modal-save" onclick="saveWeightLog()">Uložit do grafu</button>
+    `;
+  } else if(type==='novyOdznak'){
+    // CHYTRÁ TVORBA VLASTNÍ VÝZVY
+    html=`
+      <div class="modal-head"><h3>🏅 Vytvořit chytrou výzvu</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="field"><span class="field-label">Ikona (emodži)</span><input class="field-input" id="newBgIcon" value="🎯" maxlength="2" style="font-size:20px;text-align:center;"></div>
+      <div class="field"><span class="field-label">Název výzvy</span><input class="field-input" id="newBgName" placeholder="např. Maratonec"></div>
+      <div class="field"><span class="field-label">Co má aplikace sledovat?</span>
+        <select class="field-input" id="newBgMetric">
+          <option value="cviceni_min">Celkový čas cvičení (minuty)</option>
+          <option value="cviceni_count">Počet zapsaných tréninků (zápisů)</option>
+          <option value="water_liters">Vypitá voda (celkem litrů)</option>
+          <option value="uceni_min">Čas v Zóně učení (minuty)</option>
+          <option value="konicky_min">Čas na relax/koníčkách (minuty)</option>
+        </select>
+      </div>
+      <div class="field"><span class="field-label">Cílová hodnota k dosažení</span><input class="field-input" id="newBgTarget" type="number" placeholder="např. 150 (minut), 10 (tréninků), 20 (litrů)"></div>
+      <button class="modal-save" onclick="saveCustomBadge()">Přidat a začít sledovat</button>
+    `;
+  } else if(type==='fotoArchiv'){
+    const archive = loadLS('photoArchive', []);
+    let photosHtml = archive.map(p => `
+      <div style="aspect-ratio:3/4;border-radius:12px;background-image:url(${p.url});background-size:cover;background-position:center;position:relative;">
+        <span style="position:absolute;bottom:4px;left:4px;right:4px;background:rgba(0,0,0,0.6);color:#fff;font-size:9px;padding:2px;text-align:center;border-radius:4px;">${new Date(p.date).toLocaleDateString('cs-CZ')}</span>
+      </div>
+    `).join('');
+    
+    html=`
+      <div class="modal-head"><h3>🗂️ Časová osa transformace</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:300px;overflow-y:auto;margin-bottom:14px;">
+        ${photosHtml || '<div class="empty-hint" style="grid-column:1/-1;">Archiv je zatím prázdný. Nahraj svou první fotku!</div>'}
+      </div>
+      <button class="modal-save" onclick="closeModal()">Zavřít archiv</button>
+    `;
+  }
+  sheet.innerHTML = html;
+  overlay.classList.add('show');
+}
+
+function saveExerciseLog(){
+  const select = document.getElementById('exType');
+  let type = select.value === 'custom' ? document.getElementById('customExVal').value.trim() : select.value;
+  const min = document.getElementById('exMin').value || 0;
+  const note = document.getElementById('exNote').value;
+  
+  if(!type) type = "Cvičení";
+  
+  // Trvalé uložení vlastního typu do paměti na příště
+  if(select.value === 'custom' && type) {
+    let custom = loadLS('customExList', []);
+    if(!custom.includes(type)) { custom.push(type); saveLS('customExList', custom); }
+  }
+
+  logActivity('cviceni', `${type} (${min} min)${note ? ' - '+note : ''}`, min);
+  closeModal(); showToast('Cvičení uloženo 💪');
+}
+
+function saveHobbyLog(){
+  const select = document.getElementById('hbType');
+  let type = select.value === 'custom' ? document.getElementById('customHbVal').value.trim() : select.value;
+  const min = document.getElementById('hbMin').value || Math.round(swSeconds/60) || 15;
+  const note = document.getElementById('hbNote').value;
+  
+  if(!type) type = "Aktivita";
+  
+  // Trvalé uložení vlastního typu koníčku na příště
+  if(select.value === 'custom' && type) {
+    let custom = loadLS('customHbList', []);
+    if(!custom.includes(type)) { custom.push(type); saveLS('customHbList', custom); }
+  }
+
+  logActivity('konicky', `${type} (${min} min)${note ? ' - '+note : ''}`, min);
+  closeModal(); showToast('Aktivita uložena 🧵');
+}
+
+function saveStudyLog(){
+  const type = document.getElementById('stType').value || 'Vzdělávání';
+  const min = document.getElementById('stMin').value || 0;
+  const note = document.getElementById('stNote').value;
+  
+  logActivity('uceni', `${type} (${min} min)${note ? ' - '+note : ''}`, min);
+  closeModal(); showToast('Studium uloženo 📖');
+}
+
+function saveWeightLog(){
+  const val = parseFloat(document.getElementById('weightInputVal').value);
+  if(!val) return;
+  let logs = loadLS('weightLogs', [
+    {date: '01.07', val: 72.0}, {date: '05.07', val: 71.6}, {date: '10.07', val: 71.2}, 
+    {date: '15.07', val: 70.8}, {date: '20.07', val: 70.2}
+  ]);
+  
+  const todayStr = `${todayDateObj.getDate()}.${todayDateObj.getMonth()+1}.`;
+  logs.push({date: todayStr, val: val});
+  saveLS('weightLogs', logs);
+  
+  logActivity('vaha', `Zapsána váha: ${val} kg`);
+  renderWeightChart();
+  closeModal(); showToast('Váha zaznamenána do grafu ⚖️');
+}
+
+function saveCustomBadge(){
+  const icon = document.getElementById('newBgIcon').value || '🎯';
+  const name = document.getElementById('newBgName').value.trim() || 'Moje výzva';
+  const metric = document.getElementById('newBgMetric').value;
+  const target = parseFloat(document.getElementById('newBgTarget').value) || 100;
+  
+  let unit = metric.includes('min') ? 'minut' : metric.includes('liters') ? 'litrů vody' : 'zápisů';
+  const desc = `Cíl: ${target} ${unit}`;
+  
+  let badges = loadLS('userBadges_v3', defaultBadges);
+  badges.push({id: 'c_'+Date.now(), icon: icon, name: name, unlocked: false, desc: desc, metric: metric, target: target});
+  saveLS('userBadges_v3', badges);
+  
+  renderBadges();
+  evaluateBadges(); // Rozezná, jestli už ho náhodou nemáš rovnou splněný!
+  closeModal(); showToast('Nová výzva se sledováním vytvořena 🏅');
+}
+
+function pickSeg(btn){
+  [...btn.parentElement.children].forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+function closeModal(){
+  overlay.classList.remove('show');
+  clearInterval(swInterval); swInterval=null; swRunning=false; swSeconds=0;
+}
+function toggleStopwatch(){
+  const btn = document.getElementById('swBtn');
+  swRunning = !swRunning;
+  btn.textContent = swRunning ? 'Zastavit stopky' : 'Spustit stopky';
+  if(swRunning){
+    swInterval = setInterval(()=>{
+      swSeconds++;
+      const m = String(Math.floor(swSeconds/60)).padStart(2,'0');
+      const s = String(swSeconds%60).padStart(2,'0');
+      const el = document.getElementById('swTime');
+      if(el) el.textContent = m+':'+s;
+    },1000);
+  } else {
+    clearInterval(swInterval);
+  }
+}
+function toggleCustom(selectEl, wrapId){
+  document.getElementById(wrapId).classList.toggle('show', selectEl.value==='custom');
+}
+
+/* ---------- GOALS (Profil) ---------- */
+const goalIds = ['goalWeight','goalWater','goalStudy','goalExercise'];
+goalIds.forEach(id=>{
+  const el = document.getElementById(id);
+  const saved = loadLS(id, null);
+  if(saved!==null) el.value = saved;
+});
+function saveGoals(){
+  goalIds.forEach(id=> saveLS(id, document.getElementById(id).value));
+  renderGlasses(); renderDonutChart();
+  showToast('Cíle byly uloženy a grafy aktualizovány 🌿');
+}
+
+/* ---------- SYSTEM NOTIFICATIONS ---------- */
+function requestSystemNotifications(){
+  if (!("Notification" in window)) {
+    showToast("Tento prohlížeč nepodporuje systémové notifikace 🔕");
+    return;
+  }
+  Notification.requestPermission().then((permission) => {
+    if (permission === "granted") {
+      document.getElementById('notifStatusIcon').textContent = "🔔";
+      document.getElementById('notifStatusIcon').style.opacity = "1";
+      showToast("Upozornění v telefonu povolena! 🔔");
+      new Notification("Balanc — Upozornění aktivní", {
+        body: "Aplikace ti nyní bude připomínat pitný režim, zápisy i cyklus.",
+        icon: "https://fav.farm/🌿"
+      });
+    } else {
+      showToast("Notifikace byly zamítnuty v nastavení prohlížeče.");
+    }
+  });
+}
+
+if ("Notification" in window && Notification.permission === "granted") {
+  document.getElementById('notifStatusIcon').textContent = "🔔";
+  document.getElementById('notifStatusIcon').style.opacity = "1";
+}
+
+setInterval(()=>{
+  if (!("Notification" in window) || Notification.permission !== "granted") return;
+  const now = new Date();
+  const currentTime = String(now.getHours()).padStart(2,'0') + ":" + String(now.getMinutes()).padStart(2,'0');
+  const lastNotifDate = loadLS('lastNotifSentDate', '');
+  const todayStr = now.toISOString().split('T')[0];
+
+  if(loadLS('notifMorningToggle', true) && currentTime === loadLS('notifMorningTime', '07:00') && lastNotifDate !== todayStr+'_m'){
+    new Notification("Balanc — Ranní start ☀️", { body: "Krásné ráno! Otevři aplikaci a zkontroluj svůj dnešní checklist.", icon: "https://fav.farm/☀️" });
+    saveLS('lastNotifSentDate', todayStr+'_m');
+  }
+  if(loadLS('notifWaterToggle', true) && currentTime === loadLS('notifWaterTime', '14:30') && lastNotifDate !== todayStr+'_w'){
+    new Notification("Balanc — Pitný režim 💧", { body: "Nezapomeň pít! Můžeš si odškrtnout další sklenici vody?", icon: "https://fav.farm/💧" });
+    saveLS('lastNotifSentDate', todayStr+'_w');
+  }
+  if(loadLS('notifEveningToggle', true) && currentTime === loadLS('notifEveningTime', '21:00') && lastNotifDate !== todayStr+'_e'){
+    new Notification("Balanc — Večerní reflexe 🌙", { body: "Jaký byl tvůj dnešní den? Zapiš si krátkou poznámku a náladu.", icon: "https://fav.farm/🌙" });
+    saveLS('lastNotifSentDate', todayStr+'_e');
+  }
+}, 30000);
+
+/* ---------- TOAST ---------- */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
