@@ -80,7 +80,7 @@
   /* ---------- BOTTOM NAV ---------- */
   .bottomnav{
     position:absolute;
-    left:14px; right:14px; bottom:16px;
+    left:10px; right:10px; bottom:16px;
     height:72px;
     background: var(--dark);
     border-radius:28px;
@@ -89,15 +89,17 @@
     justify-content:space-around;
     box-shadow: 0 10px 24px rgba(10,51,35,0.4);
     z-index:40;
+    padding: 0 4px;
   }
   .navbtn{
-    display:flex;flex-direction:column;align-items:center;gap:4px;
+    display:flex;flex-direction:column;align-items:center;gap:3px;
     background:none;border:none;cursor:pointer;
-    color:#7fa896; padding:6px 10px; border-radius:16px;
+    color:#7fa896; padding:6px 6px; border-radius:16px;
     transition:.2s;
+    flex:1;
   }
-  .navbtn svg{width:22px;height:22px;stroke:#7fa896;fill:none;stroke-width:1.8;transition:.2s;}
-  .navbtn span{font-size:10.5px;font-weight:700;font-family:'Nunito';}
+  .navbtn svg{width:20px;height:20px;stroke:#7fa896;fill:none;stroke-width:1.8;transition:.2s;}
+  .navbtn span{font-size:10px;font-weight:700;font-family:'Nunito';}
   .navbtn.active{color:var(--beige);background:rgba(131,153,88,0.18);}
   .navbtn.active svg{stroke:var(--moss);}
   .navbtn.active span{color:var(--beige);}
@@ -228,7 +230,7 @@
   }
   .gratitude-input::placeholder{color:rgba(10,51,35,0.4);}
 
-  /* ---------- CALENDAR (MOOD + CYCLE INTEGRATED & BIG ICONS) ---------- */
+  /* ---------- CALENDAR ---------- */
   .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
   .cal-arrow{background:none;border:none;font-size:18px;font-weight:700;cursor:pointer;color:var(--dark);padding:4px 10px;}
   .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
@@ -244,20 +246,17 @@
   .day-cell.empty{background:transparent;border:none;cursor:default;}
   .day-cell.today{font-weight:800;box-shadow: 0 0 0 2px var(--dark) inset;}
   
-  /* Mood background colors in calendar */
-  .day-cell.mood-1{background: #eccbcc;} /* špatná nálada */
-  .day-cell.mood-2{background: #e6dfb8;} /* neutrální */
-  .day-cell.mood-3{background: #e2e8bc;} /* fajn */
-  .day-cell.mood-4{background: #cae4b1;} /* skvělá */
-  .day-cell.mood-5{background: #b2d888;} /* fantastická */
+  .day-cell.mood-1{background: #eccbcc;}
+  .day-cell.mood-2{background: #e6dfb8;}
+  .day-cell.mood-3{background: #e2e8bc;}
+  .day-cell.mood-4{background: #cae4b1;}
+  .day-cell.mood-5{background: #b2d888;}
 
-  /* Cycle overlays on top of mood colors */
   .day-cell.period-day{border: 2.5px solid #d35d47; font-weight:800;}
   .day-cell.period-day::after{content:"🩸";font-size:9.5px;position:absolute;top:2px;right:2px;line-height:1;}
   .day-cell.ovulation-day{border: 2px dashed var(--teal);}
   .day-cell.ovulation-day::after{content:"✨";font-size:9.5px;position:absolute;top:2px;right:2px;line-height:1;}
 
-  /* BIGGER ICONS */
   .day-cell .icons{display:flex;gap:3px;margin-top:auto;padding-bottom:4px;height:18px;align-items:center;}
   .day-cell .icons svg{width:16px;height:16px;fill:var(--dark);opacity:0.85;flex-shrink:0;}
   .day-cell.period-day .icons svg{fill:#9b3829;}
@@ -347,7 +346,7 @@
   .donut-legend .li{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;}
   .donut-legend .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 
-  /* ---------- HALL OF FAME (BADGES & SMART CHALLENGES) ---------- */
+  /* ---------- HALL OF FAME ---------- */
   .badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px;}
   .badge{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;}
   .badge-circle{
@@ -364,6 +363,64 @@
     width:100%;background:rgba(131,153,88,0.2);color:var(--dark);border:1px dashed var(--moss);
     border-radius:16px;padding:10px;font-family:'Quicksand';font-weight:700;font-size:12.5px;
     cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+
+  /* ---------- NOTES & JOURNAL TAB ---------- */
+  .note-folder-box {
+    background: var(--beige-dim);
+    border-radius: 20px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(10,51,35,0.08);
+  }
+  .note-folder-head {
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; font-family: 'Quicksand'; font-weight: 700; font-size: 14px;
+  }
+  .note-folder-head .f-title { display: flex; align-items: center; gap: 8px; }
+  .note-folder-head .f-badge {
+    background: rgba(10,51,35,0.12); color: var(--dark);
+    font-size: 11px; padding: 2px 8px; border-radius: 10px;
+  }
+  .note-list-container {
+    margin-top: 12px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .note-item {
+    background: var(--beige);
+    border-radius: 16px;
+    padding: 12px 14px;
+    box-shadow: 0 2px 8px rgba(10,51,35,0.05);
+    border-left: 4px solid var(--moss);
+    position: relative;
+  }
+  .note-item-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px; font-size: 11px; font-weight: 700; color: var(--teal);
+  }
+  .note-item-mood {
+    background: rgba(131,153,88,0.18); color: var(--dark);
+    padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 700;
+  }
+  .note-item-text {
+    font-size: 13px; line-height: 1.45; color: var(--dark); font-weight: 500;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .note-delete-btn {
+    background: none; border: none; color: var(--rose); cursor: pointer;
+    font-weight: 700; font-size: 14px; padding: 0 4px;
+  }
+  .note-mood-row {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
+  }
+  .note-mood-chip {
+    background: var(--beige-dim); border: 1.5px solid transparent;
+    border-radius: 12px; padding: 6px 10px; font-size: 11.5px; font-weight: 700;
+    cursor: pointer; transition: .15s; display: flex; align-items: center; gap: 4px;
+    color: var(--dark);
+  }
+  .note-mood-chip.sel {
+    background: var(--moss); color: var(--dark); border-color: var(--dark);
+    transform: scale(1.05); box-shadow: var(--shadow-sm);
   }
 
   /* ---------- PROFIL TAB ---------- */
@@ -546,8 +603,9 @@
     </div>
 
     <div class="card-dark">
-      <div class="card-title" style="color:var(--beige);">🌙 Večerní reflexe — poznámky ke dni</div>
-      <textarea class="gratitude-input" id="eveningNotes" style="height:80px;resize:none;margin-bottom:0;" placeholder="Co se dnes dělo, jak ses cítila, co tě napadlo..."></textarea>
+      <div class="card-title" style="color:var(--beige);">🌙 Večerní reflexe — rychlý zápis</div>
+      <textarea class="gratitude-input" id="eveningNotes" style="height:70px;resize:none;margin-bottom:8px;" placeholder="Co se dnes dělo, jak ses cítila, co tě napadlo..."></textarea>
+      <button class="save-btn" style="background:var(--moss);color:var(--dark);margin-top:0;padding:10px;font-size:12.5px;" onclick="saveEveningReflectToJournal()">+ Uložit jako záznam do Deníku pocitů 📒</button>
     </div>
 
   </div>
@@ -609,10 +667,10 @@
     </div>
 
     <div class="card">
-      <div class="card-title">🖼️ Tematické složky</div>
-      <div class="muted" style="margin-bottom:10px;">Třidi si inspiraci, zdravé recepty nebo pokroky ve fitness do vlastních alb.</div>
+      <div class="card-title">🖼️ Tematická alba na fotky</div>
+      <div class="muted" style="margin-bottom:10px;">Třídi si inspiraci na cvičení, zdravé recepty nebo fotky do alb.</div>
       <div class="new-folder-row">
-        <input type="text" id="newFolderInput" placeholder="Název nové složky">
+        <input type="text" id="newFolderInput" placeholder="Název nového alba na fotky...">
         <button onclick="createFolder()">+ Vytvořit</button>
       </div>
       <div id="folderList"></div>
@@ -642,9 +700,63 @@
 
     <div class="card">
       <div class="card-title">🏅 Síň slávy & osobní výzvy</div>
-      <div class="muted" style="margin-bottom:10px;">Všechny výzvy jsou na začátku zamčené. Zaznamenávej aktivity a vodu, systém ti je bude automaticky odemykat!</div>
+      <div class="muted" style="margin-bottom:10px;">Všechny výzvy jsou na začátku zamčené. Zaznamenávej aktivity, poznámky a vodu, systém ti je bude automaticky odemykat!</div>
       <div class="badge-grid" id="badgeGrid"></div>
       <button class="add-badge-btn" onclick="openModal('novyOdznak')">＋ Přidat vlastní výzvu se sledováním</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-poznamky">
+    <h2 style="margin-bottom:14px;">Deník a poznámky 📒</h2>
+
+    <div class="card">
+      <div class="card-title">✍️ Nový zápis pocitů a myšlenek</div>
+      <div class="muted" style="margin-bottom:12px;">Zaznamenej si, jak se cítíš, jaké máš pocity nebo nápady, a ulož je do tematické složky.</div>
+      
+      <div class="field">
+        <span class="field-label">Do složky</span>
+        <select class="field-input" id="noteFolderSelect" onchange="if(this.value==='new_custom') document.getElementById('newNoteFolderWrap').style.display='flex'; else document.getElementById('newNoteFolderWrap').style.display='none';">
+        </select>
+      </div>
+
+      <div class="new-folder-row" id="newNoteFolderWrap" style="display:none;margin-bottom:14px;">
+        <input type="text" id="newNoteFolderInput" placeholder="Název nové složky (např. Sny, Afirmace...)">
+        <button onclick="createNoteFolder()">+ Vytvořit</button>
+      </div>
+
+      <div class="field">
+        <span class="field-label">Jak se cítíš k tomuto zápisu? (emoce / nálada)</span>
+        <div class="note-mood-row" id="noteMoodChips">
+          <button class="note-mood-chip sel" onclick="selectNoteMood(this, '🙂 Spokojenost')">🙂 Spokojenost</button>
+          <button class="note-mood-chip" onclick="selectNoteMood(this, '😔 Smutek / Tíha')">😔 Smutek / Tíha</button>
+          <button class="note-mood-chip" onclick="selectNoteMood(this, '💡 Nápad / Vize')">💡 Nápad / Vize</button>
+          <button class="note-mood-chip" onclick="selectNoteMood(this, '🔥 Motivace')">🔥 Motivace</button>
+          <button class="note-mood-chip" onclick="selectNoteMood(this, '🧘‍♀️ Klid & Mír')">🧘‍♀️ Klid & Mír</button>
+          <button class="note-mood-chip" onclick="selectNoteMood(this, '❤️ Vděčnost')">❤️ Vděčnost</button>
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:12px;">
+        <span class="field-label">Text poznámky / deníku</span>
+        <textarea class="gratitude-input" id="newNoteText" placeholder="Co se právě děje? Jaké pocity mnou prochází, z čeho mám radost nebo nad čím přemýšlím?..." style="height:100px;resize:none;margin-bottom:0;"></textarea>
+      </div>
+
+      <button class="save-btn" onclick="saveNewNote()">+ Uložit poznámku do Deníku</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🗂️ Vytvořit novou složku na poznámky</div>
+      <div class="muted" style="margin-bottom:10px;">Vytvoř si vlastní kategorii pro třídění (např. Pracovní nápady, Moje terapie, Cvičební deník...).</div>
+      <div class="new-folder-row" style="margin-bottom:0;">
+        <input type="text" id="quickNewFolderInput" placeholder="Název nové složky...">
+        <button onclick="createNoteFolderFromQuick()">+ Vytvořit</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📂 Moje složky a uložené poznámky</div>
+      <div class="muted" style="margin-bottom:12px;">Klepnutím na složku zobrazíš historii zapsaných poznámek. Každý zápis má uloženo přesné datum a emoci.</div>
+      <div id="noteFoldersList"></div>
     </div>
   </div>
 
@@ -747,7 +859,11 @@
     </button>
     <button class="navbtn" data-screen="pokrok">
       <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M11 20V4M18 20v-7"/></svg>
-      <span>Můj pokrok</span>
+      <span>Pokrok</span>
+    </button>
+    <button class="navbtn" data-screen="poznamky">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Deník</span>
     </button>
     <button class="navbtn" data-screen="profil">
       <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.5-4 4.5-6 7-6s5.5 2 7 6"/></svg>
@@ -795,6 +911,7 @@ navBtns.forEach(btn=>{
     
     if(btn.dataset.screen === 'kalendar') renderCalendar();
     if(btn.dataset.screen === 'pokrok') { renderWeightChart(); renderDonutChart(); renderBadges(); renderTransformSection(); }
+    if(btn.dataset.screen === 'poznamky') { renderNoteFolders(); updateNoteFolderSelect(); }
   });
 });
 
@@ -917,13 +1034,220 @@ function changeSleep(delta){
   logActivity('sleep', `Délka spánku: ${sleepHours} h`);
 }
 
-/* ---------- EVENING NOTES ---------- */
+/* ---------- EVENING NOTES (QUICK ON HOME) ---------- */
 const eveningNotes = document.getElementById('eveningNotes');
 eveningNotes.value = loadLS('eveningNotes','');
 eveningNotes.addEventListener('input', ()=>{
   saveLS('eveningNotes', eveningNotes.value);
   logActivity('note', eveningNotes.value);
 });
+
+function saveEveningReflectToJournal(){
+  const text = eveningNotes.value.trim();
+  if(!text){
+    showToast('Nejdříve napiš svoji poznámku nahoru ✍️');
+    return;
+  }
+  const folderName = "💭 Deník pocitů";
+  if(!notesData[folderName]) notesData[folderName] = [];
+  
+  const newNoteObj = {
+    id: Date.now(),
+    time: new Date().toLocaleDateString('cs-CZ', {day:'numeric', month:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit'}),
+    mood: "🌙 Večerní reflexe",
+    text: text
+  };
+  notesData[folderName].unshift(newNoteObj);
+  saveLS('userNotesData', notesData);
+  
+  eveningNotes.value = '';
+  saveLS('eveningNotes', '');
+  
+  logActivity('note', `🌙 Reflexe uložena do Deníku: ${text.substring(0, 35)}...`, 0);
+  renderNoteFolders();
+  updateNoteFolderSelect();
+  showToast('Reflexe byla uložena do Deníku pocitů 📒');
+}
+
+/* ---------- NOTES & JOURNAL LOGIC (5th TAB) ---------- */
+let defaultNotesData = {
+  "💭 Deník pocitů": [
+    { id: 101, time: "20. 07. 2026, 19:30", mood: "🙂 Spokojenost", text: "Dnes se cítím mnohem klidnější. Cvičení jógy ráno mi opravdu pomohlo začít den s čistou hlavou." }
+  ],
+  "✨ Nápady a inspirace": [
+    { id: 102, time: "18. 07. 2026, 14:15", mood: "💡 Nápad / Vize", text: "Zkusit si příští týden připravit nové zdravé recepty na obědy s sebou do práce." }
+  ],
+  "🧘‍♀️ Terapie a vděčnost": [],
+  "🎯 Moje cíle a sny": []
+};
+
+let notesData = loadLS('userNotesData', defaultNotesData);
+let selectedNoteMood = "🙂 Spokojenost";
+let openNoteFolder = "💭 Deník pocitů";
+
+function selectNoteMood(chip, moodStr){
+  document.querySelectorAll('.note-mood-chip').forEach(c => c.classList.remove('sel'));
+  chip.classList.add('sel');
+  selectedNoteMood = moodStr;
+}
+
+function updateNoteFolderSelect(){
+  const select = document.getElementById('noteFolderSelect');
+  if(!select) return;
+  const names = Object.keys(notesData);
+  select.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join('') + `<option value="new_custom">+ Vytvořit novou složku...</option>`;
+}
+
+function createNoteFolder(){
+  const input = document.getElementById('newNoteFolderInput');
+  const name = input.value.trim();
+  if(!name) return;
+  if(notesData[name]) {
+    showToast('Tato složka už existuje 📁');
+    return;
+  }
+  notesData[name] = [];
+  input.value = '';
+  document.getElementById('newNoteFolderWrap').style.display = 'none';
+  saveLS('userNotesData', notesData);
+  renderNoteFolders();
+  updateNoteFolderSelect();
+  showToast('Nová složka na poznámky vytvořena 📁');
+}
+
+function createNoteFolderFromQuick(){
+  const input = document.getElementById('quickNewFolderInput');
+  const name = input.value.trim();
+  if(!name) return;
+  if(notesData[name]) {
+    showToast('Tato složka už existuje 📁');
+    return;
+  }
+  notesData[name] = [];
+  input.value = '';
+  saveLS('userNotesData', notesData);
+  renderNoteFolders();
+  updateNoteFolderSelect();
+  showToast('Nová složka na poznámky vytvořena 📁');
+}
+
+function saveNewNote(){
+  const select = document.getElementById('noteFolderSelect');
+  let folderName = select.value;
+  const textarea = document.getElementById('newNoteText');
+  const text = textarea.value.trim();
+  
+  if(!text){
+    showToast('Napiš prosím nějaký text své poznámky ✍️');
+    return;
+  }
+  
+  if(folderName === 'new_custom'){
+    const customInput = document.getElementById('newNoteFolderInput');
+    folderName = customInput.value.trim() || "Moje poznámky";
+    if(!notesData[folderName]) notesData[folderName] = [];
+    document.getElementById('newNoteFolderWrap').style.display = 'none';
+  }
+  
+  if(!notesData[folderName]) notesData[folderName] = [];
+  
+  const newNoteObj = {
+    id: Date.now(),
+    time: new Date().toLocaleDateString('cs-CZ', {day:'numeric', month:'numeric', year:'numeric', hour:'2-digit', minute:'2-digit'}),
+    mood: selectedNoteMood,
+    text: text
+  };
+  
+  notesData[folderName].unshift(newNoteObj);
+  saveLS('userNotesData', notesData);
+  textarea.value = '';
+  
+  logActivity('note', `📒 [${folderName}] ${selectedNoteMood}: ${text.substring(0, 35)}...`, 0);
+  
+  openNoteFolder = folderName;
+  renderNoteFolders();
+  updateNoteFolderSelect();
+  showToast('Poznámka byla uložena do složky ' + folderName + ' 📒');
+}
+
+function toggleNoteFolder(name){
+  openNoteFolder = (openNoteFolder === name) ? null : name;
+  renderNoteFolders();
+}
+
+function deleteNote(folderName, noteId){
+  if(confirm('Opravdu chceš tuto poznámku smazat?')){
+    notesData[folderName] = notesData[folderName].filter(n => n.id !== noteId);
+    saveLS('userNotesData', notesData);
+    renderNoteFolders();
+    showToast('Poznámka byla smazána 🗑️');
+  }
+}
+
+function deleteNoteFolder(folderName){
+  if(confirm(`Opravdu chceš smazat celou složku "${folderName}"?`)){
+    delete notesData[folderName];
+    saveLS('userNotesData', notesData);
+    if(openNoteFolder === folderName) openNoteFolder = null;
+    renderNoteFolders();
+    updateNoteFolderSelect();
+    showToast('Složka byla smazána 🗑️');
+  }
+}
+
+function renderNoteFolders(){
+  const container = document.getElementById('noteFoldersList');
+  if(!container) return;
+  const names = Object.keys(notesData);
+  if(names.length === 0){
+    container.innerHTML = '<div class="empty-hint">Zatím žádné složky s poznámkami.</div>';
+    return;
+  }
+  
+  container.innerHTML = names.map(name => {
+    const notes = notesData[name] || [];
+    const isOpen = (openNoteFolder === name);
+    
+    let notesHtml = '';
+    if(isOpen){
+      if(notes.length === 0){
+        notesHtml = '<div class="empty-hint" style="padding: 10px 0;">V této složce zatím nejsou žádné poznámky.</div>';
+      } else {
+        notesHtml = '<div class="note-list-container">' + notes.map(n => `
+          <div class="note-item">
+            <div class="note-item-head">
+              <span>📅 ${n.time}</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="note-item-mood">${n.mood}</span>
+                <button class="note-delete-btn" onclick="deleteNote('${name.replace(/'/g,"\\'")} ', ${n.id}); event.stopPropagation();" title="Smazat">✕</button>
+              </div>
+            </div>
+            <div class="note-item-text">${n.text}</div>
+          </div>
+        `).join('') + '</div>';
+      }
+      
+      if(notes.length === 0 && !["💭 Deník pocitů", "✨ Nápady a inspirace", "🧘‍♀️ Terapie a vděčnost", "🎯 Moje cíle a sny"].includes(name)){
+        notesHtml += `<button style="margin-top:8px;background:none;border:1px dashed var(--rose);color:var(--rose);padding:6px;border-radius:10px;width:100%;font-size:11px;font-weight:700;cursor:pointer;" onclick="deleteNoteFolder('${name.replace(/'/g,"\\'")} '); event.stopPropagation();">🗑️ Smazat tuto prázdnou složku</button>`;
+      }
+    }
+    
+    return `
+      <div class="note-folder-box">
+        <div class="note-folder-head" onclick="toggleNoteFolder('${name.replace(/'/g,"\\'")} ')">
+          <div class="f-title">📁 ${name}</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="f-badge">${notes.length} ${notes.length === 1 ? 'záznam' : (notes.length >= 2 && notes.length <= 4) ? 'záznamy' : 'záznamů'}</span>
+            <span style="font-size:12px;color:var(--teal);">${isOpen ? '▲' : '▼'}</span>
+          </div>
+        </div>
+        ${notesHtml}
+      </div>
+    `;
+  }).join('');
+}
+renderNoteFolders();
+updateNoteFolderSelect();
 
 /* ---------- LOGGING ENGINE ---------- */
 function logActivity(type, detail, minutes = 0){
@@ -949,7 +1273,7 @@ function logActivity(type, detail, minutes = 0){
   evaluateBadges();
 }
 
-/* ---------- CALENDAR (MOOD + CYCLE INTEGRATED & BIG ICONS) ---------- */
+/* ---------- CALENDAR ---------- */
 let calDate = new Date();
 const monthNames = ["Leden","Únor","Březen","Duben","Květen","Červen","Červenec","Srpen","Září","Říjen","Listopad","Prosinec"];
 
@@ -987,13 +1311,11 @@ function renderCalendar(){
     
     if(cellDate.toDateString() === new Date().toDateString()) cell.classList.add('today');
 
-    // 1. Zabarvení podle nálady
     const dayMood = moods[dateKey];
     if(dayMood) {
       cell.classList.add('mood-'+dayMood);
     }
 
-    // 2. Propojení s menstruací (přidá výrazný rámeček a ikonku kapky v rohu, barva nálady zůstává)
     if(lastP){
       const diffDays = Math.floor((cellDate - lastP)/(1000*60*60*24));
       const cycleDay = ((diffDays % cycleLen) + cycleLen) % cycleLen;
@@ -1001,7 +1323,6 @@ function renderCalendar(){
       else if(cycleDay >= cycleLen - 16 && cycleDay <= cycleLen - 12) cell.classList.add('ovulation-day');
     }
 
-    // 3. Zvětšené ikony zápisů (16px místo 10px)
     let iconsHtml = '';
     const dayLogs = logs[dateKey] || [];
     if(dayLogs.some(l => l.type === 'cviceni')) iconsHtml += iconSVGs.cviceni;
@@ -1024,10 +1345,10 @@ function showDayDetail(d,m,y,dateKey){
   let content = `<h4><span>📅 ${d}. ${monthNames[m]} ${y}</span><button onclick="document.getElementById('dayDetail').style.display='none'" style="background:none;border:none;color:var(--beige);cursor:pointer;font-weight:700;">✕</button></h4>`;
   
   if(dayLogs.length === 0){
-    content += `<div class="entry" style="color:rgba(247,244,213,0.6);">Zatím žádné zápisy pro tento den. Klepni na rychlá tlačítka na záložce Dnes!</div>`;
+    content += `<div class="entry" style="color:rgba(247,244,213,0.6);">Zatím žádné zápisy pro tento den. Klepni na rychlá tlačítka nebo přidej poznámku v Deníku!</div>`;
   } else {
     dayLogs.forEach(log => {
-      let icon = log.type === 'cviceni' ? '💪' : log.type === 'uceni' ? '📖' : log.type === 'konicky' ? '🧵' : log.type === 'vaha' ? '⚖️' : '✨';
+      let icon = log.type === 'cviceni' ? '💪' : log.type === 'uceni' ? '📖' : log.type === 'konicky' ? '🧵' : log.type === 'vaha' ? '⚖️' : log.type === 'note' ? '📒' : '✨';
       content += `<div class="entry"><b>${log.time} ${icon}</b> — ${log.detail}</div>`;
     });
   }
@@ -1148,15 +1469,14 @@ function renderDonutChart(){
 }
 renderDonutChart();
 
-/* ---------- HALL OF FAME (RESET BADGES & SMART AUTO-TRACKING) ---------- */
-// Všechny výzvy jsou nyní defaultně uzamčené (unlocked: false)
+/* ---------- HALL OF FAME & SMART AUTO-TRACKING ---------- */
 const defaultBadges = [
   {id:'b1', icon:'📚', name:'Knižní mol', unlocked:false, desc:'180 min v Zóně učení', metric:'uceni_min', target: 180},
   {id:'b2', icon:'🧵', name:'Královna šití', unlocked:false, desc:'120 min na koníčkách', metric:'konicky_min', target: 120},
   {id:'b3', icon:'💪', name:'Fitness hvězda', unlocked:false, desc:'3 zapsané tréninky', metric:'cviceni_count', target: 3},
   {id:'b4', icon:'🧘', name:'Zenový mistr', unlocked:false, desc:'180 min relaxu/koníčků', metric:'konicky_min', target: 180},
   {id:'b5', icon:'💧', name:'Hydratační guru', unlocked:false, desc:'Vypito celkem 15 l vody', metric:'water_liters', target: 15},
-  {id:'b6', icon:'🔥', name:'Železná vůle', unlocked:false, desc:'300 minut cvičení', metric:'cviceni_min', target: 300},
+  {id:'b6', icon:'📒', name:'Spisovatelka', unlocked:false, desc:'5 poznámek v deníku', metric:'notes_count', target: 5},
   {id:'b7', icon:'🌍', name:'Polyglot', unlocked:false, desc:'300 min v Zóně učení', metric:'uceni_min', target: 300},
   {id:'b8', icon:'⚡', name:'Akční start', unlocked:false, desc:'První zapsaný trénink', metric:'cviceni_count', target: 1}
 ];
@@ -1173,14 +1493,20 @@ function renderBadges(){
 }
 renderBadges();
 
-// Automatický rozhodčí: zkontroluje pokrok a odemkne výzvy
 function evaluateBadges(){
   const totals = loadLS('activityTotals', {cviceni:120, uceni:90, konicky:60});
   const waterLiters = loadLS('totalWaterLiters', 10);
   const logs = loadLS('dailyLogs', {});
+  const notesObj = loadLS('userNotesData', defaultNotesData);
+  
   let cviceniCount = 0;
   Object.values(logs).forEach(day => {
     cviceniCount += day.filter(l => l.type === 'cviceni').length;
+  });
+  
+  let notesCount = 0;
+  Object.values(notesObj).forEach(folderArr => {
+    notesCount += folderArr.length;
   });
 
   let badges = loadLS('userBadges_v3', defaultBadges);
@@ -1194,6 +1520,7 @@ function evaluateBadges(){
       if (b.metric === 'konicky_min') current = totals.konicky;
       if (b.metric === 'water_liters') current = waterLiters;
       if (b.metric === 'cviceni_count') current = cviceniCount;
+      if (b.metric === 'notes_count') current = notesCount;
 
       if (current >= b.target) {
         b.unlocked = true;
@@ -1209,7 +1536,7 @@ function evaluateBadges(){
   }
 }
 
-/* ---------- GALLERY / FOLDERS ---------- */
+/* ---------- GALLERY / ALBUMS ON PROGRESS TAB ---------- */
 let galleryData = loadLS('gallery', { "Zdrávé recepty": [], "Inspirace na cvičení": [] });
 function saveGallery(){ saveLS('gallery', galleryData); }
 function createFolder(){
@@ -1220,7 +1547,7 @@ function createFolder(){
   input.value='';
   saveGallery();
   renderFolders();
-  showToast('Složka byla vytvořena 📁');
+  showToast('Album na fotky bylo vytvořeno 📁');
 }
 let openFolder = null;
 function toggleFolder(name){
@@ -1238,7 +1565,7 @@ function triggerFolderUpload(name){
       galleryData[name].push(e.target.result);
       saveGallery();
       renderFolders();
-      showToast('Fotka uložena do složky 🖼️');
+      showToast('Fotka uložena do alba 🖼️');
     };
     reader.readAsDataURL(file);
   };
@@ -1248,7 +1575,7 @@ function renderFolders(){
   const list = document.getElementById('folderList');
   const names = Object.keys(galleryData);
   if(names.length===0){
-    list.innerHTML = '<div class="empty-hint">Zatím žádné složky — vytvoř první výše ☝️</div>';
+    list.innerHTML = '<div class="empty-hint">Zatím žádná alba — vytvoř první výše ☝️</div>';
     return;
   }
   list.innerHTML = names.map(name=>{
@@ -1258,11 +1585,11 @@ function renderFolders(){
     if(isOpen){
       photosHtml = '<div class="folder-photos">' +
         photos.map(p=>`<div class="ph" style="background-image:url(${p})"></div>`).join('') +
-        `<button class="folder-add" onclick="triggerFolderUpload('${name.replace(/'/g,"\\'")}')">+</button>` +
+        `<button class="folder-add" onclick="triggerFolderUpload('${name.replace(/'/g,"\\'")}') ">+</button>` +
         '</div>';
     }
     return `<div class="folder">
-      <div class="folder-head" onclick="toggleFolder('${name.replace(/'/g,"\\'")}')">
+      <div class="folder-head" onclick="toggleFolder('${name.replace(/'/g,"\\'")}') ">
         <div class="name">📁 ${name}</div>
         <div class="count">${photos.length} ${isOpen? '▲':'▼'}</div>
       </div>
@@ -1319,7 +1646,6 @@ function updateProfileUI(){
 }
 updateProfileUI();
 
-// Pamatování vlastních typů cvičení a koníčků v rozbalovacích seznamech
 function getExerciseOptions(){
   const defaults = ['Běh', 'Posilování', 'Jóga', 'Kolo', 'Plavání'];
   const custom = loadLS('customExList', []);
@@ -1387,21 +1713,21 @@ function openModal(type){
       <button class="modal-save" onclick="saveWeightLog()">Uložit do grafu</button>
     `;
   } else if(type==='novyOdznak'){
-    // CHYTRÁ TVORBA VLASTNÍ VÝZVY
     html=`
       <div class="modal-head"><h3>🏅 Vytvořit chytrou výzvu</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
       <div class="field"><span class="field-label">Ikona (emodži)</span><input class="field-input" id="newBgIcon" value="🎯" maxlength="2" style="font-size:20px;text-align:center;"></div>
-      <div class="field"><span class="field-label">Název výzvy</span><input class="field-input" id="newBgName" placeholder="např. Maratonec"></div>
+      <div class="field"><span class="field-label">Název výzvy</span><input class="field-input" id="newBgName" placeholder="např. Spisovatelka"></div>
       <div class="field"><span class="field-label">Co má aplikace sledovat?</span>
         <select class="field-input" id="newBgMetric">
           <option value="cviceni_min">Celkový čas cvičení (minuty)</option>
           <option value="cviceni_count">Počet zapsaných tréninků (zápisů)</option>
           <option value="water_liters">Vypitá voda (celkem litrů)</option>
+          <option value="notes_count">Počet zapsaných poznámek v deníku</option>
           <option value="uceni_min">Čas v Zóně učení (minuty)</option>
           <option value="konicky_min">Čas na relax/koníčkách (minuty)</option>
         </select>
       </div>
-      <div class="field"><span class="field-label">Cílová hodnota k dosažení</span><input class="field-input" id="newBgTarget" type="number" placeholder="např. 150 (minut), 10 (tréninků), 20 (litrů)"></div>
+      <div class="field"><span class="field-label">Cílová hodnota k dosažení</span><input class="field-input" id="newBgTarget" type="number" placeholder="např. 150 (minut), 10 (tréninků/poznámek), 20 (litrů)"></div>
       <button class="modal-save" onclick="saveCustomBadge()">Přidat a začít sledovat</button>
     `;
   } else if(type==='fotoArchiv'){
@@ -1432,7 +1758,6 @@ function saveExerciseLog(){
   
   if(!type) type = "Cvičení";
   
-  // Trvalé uložení vlastního typu do paměti na příště
   if(select.value === 'custom' && type) {
     let custom = loadLS('customExList', []);
     if(!custom.includes(type)) { custom.push(type); saveLS('customExList', custom); }
@@ -1450,7 +1775,6 @@ function saveHobbyLog(){
   
   if(!type) type = "Aktivita";
   
-  // Trvalé uložení vlastního typu koníčku na příště
   if(select.value === 'custom' && type) {
     let custom = loadLS('customHbList', []);
     if(!custom.includes(type)) { custom.push(type); saveLS('customHbList', custom); }
@@ -1490,9 +1814,9 @@ function saveCustomBadge(){
   const icon = document.getElementById('newBgIcon').value || '🎯';
   const name = document.getElementById('newBgName').value.trim() || 'Moje výzva';
   const metric = document.getElementById('newBgMetric').value;
-  const target = parseFloat(document.getElementById('newBgTarget').value) || 100;
+  const target = parseFloat(document.getElementById('newBgTarget').value) || 10;
   
-  let unit = metric.includes('min') ? 'minut' : metric.includes('liters') ? 'litrů vody' : 'zápisů';
+  let unit = metric.includes('min') ? 'minut' : metric.includes('liters') ? 'litrů vody' : metric === 'notes_count' ? 'zápisů v deníku' : 'tréninků';
   const desc = `Cíl: ${target} ${unit}`;
   
   let badges = loadLS('userBadges_v3', defaultBadges);
@@ -1500,7 +1824,7 @@ function saveCustomBadge(){
   saveLS('userBadges_v3', badges);
   
   renderBadges();
-  evaluateBadges(); // Rozezná, jestli už ho náhodou nemáš rovnou splněný!
+  evaluateBadges();
   closeModal(); showToast('Nová výzva se sledováním vytvořena 🏅');
 }
 
@@ -1587,7 +1911,7 @@ setInterval(()=>{
     saveLS('lastNotifSentDate', todayStr+'_w');
   }
   if(loadLS('notifEveningToggle', true) && currentTime === loadLS('notifEveningTime', '21:00') && lastNotifDate !== todayStr+'_e'){
-    new Notification("Balanc — Večerní reflexe 🌙", { body: "Jaký byl tvůj dnešní den? Zapiš si krátkou poznámku a náladu.", icon: "https://fav.farm/🌙" });
+    new Notification("Balanc — Večerní reflexe 🌙", { body: "Jaký byl tvůj dnešní den? Zapiš si krátkou poznámku do Deníku.", icon: "https://fav.farm/🌙" });
     saveLS('lastNotifSentDate', todayStr+'_e');
   }
 }, 30000);
